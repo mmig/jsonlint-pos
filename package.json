@@ -27,7 +27,6 @@
   "dependencies": {
     "JSV": ">= 4.0.x",
     "chalk": "^4.1.0",
-    "nomnom": ">= 1.5.x",
     "underscore": "^1.10.2"
   },
   "devDependencies": {
