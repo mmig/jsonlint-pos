@@ -29,7 +29,16 @@
               document.getElementById("result").innerHTML = "JSON is valid!";
               document.getElementById("result").className = "pass";
               if (document.getElementById("reformat").checked) {
-                document.getElementById("source").value = JSON.stringify(result, null, "  ");
+                var func = !jsonlint.parser.getLoc()? null : function(n,v){
+                  if(Array.isArray(v)){
+                    var obj = {};
+                    obj[jsonlint.parser.getLoc()] = v[jsonlint.parser.getLoc()];
+                    for(var i=0,s=v.length;i<s;++i) obj[i]=v[i];
+                    return obj;
+                  }
+                  return v;
+                }
+                document.getElementById("source").value = JSON.stringify(result, func, "  ");
               }
             }
           } catch(e) {
