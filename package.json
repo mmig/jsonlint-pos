@@ -29,9 +29,9 @@
     "JSV": ">= 4.0.x"
   },
   "devDependencies": {
+    "jison": "^0.4.18",
     "test": "*",
-    "jison": "*",
-    "uglify-js": "*"
+    "uglify-js": "^3.10.0"
   },
   "scripts": {
     "test": "node test/all-tests.js"
