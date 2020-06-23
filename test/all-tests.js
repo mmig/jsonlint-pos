@@ -213,6 +213,13 @@ exports["test extra brace"] = function () {
     assert["throws"](function () {parser.parse(json)}, "should throw error");
 }
 
+exports["test duplicate keys (strictly)"] = function () {
+    var json = fs.readFileSync(__dirname + "/fails/35.json").toString();
+    parser.setStrict(true);
+    assert["throws"](function () {parser.parse(json)}, "should throw error");
+    parser.setStrict(false);
+}
+
 exports["test pass-1"] = function () {
     var json = fs.readFileSync(__dirname + "/passes/1.json").toString();
     assert.doesNotThrow(function () {parser.parse(json)}, "should pass");
@@ -225,6 +232,11 @@ exports["test pass-2"] = function () {
 
 exports["test pass-3"] = function () {
     var json = fs.readFileSync(__dirname + "/passes/3.json").toString();
+    assert.doesNotThrow(function () {parser.parse(json)}, "should pass");
+}
+
+exports["test pass-4"] = function () {
+    var json = fs.readFileSync(__dirname + "/fails/35.json").toString();
     assert.doesNotThrow(function () {parser.parse(json)}, "should pass");
 }
 
