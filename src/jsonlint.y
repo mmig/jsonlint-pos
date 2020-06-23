@@ -3,7 +3,8 @@
 
 // MODIFICATION russa: added position meta-data to parsed objects
 var _isLoc = false;
-this.isLoc = function(){
+var _p = parser;
+_p.isLoc = function(){
   return _isLoc;
 };
 /**
@@ -11,13 +12,13 @@ this.isLoc = function(){
  *        enable / disable extraction of position-information
  * DEFAULT: disabled
  */
-this.setLocEnabled = function(isEnabled){
+_p.setLocEnabled = function(isEnabled){
     _isLoc = isEnabled;
 };
 
 // MODIFICATION russa: add "strict" parsing mode (e.g. reject duplicate key entries)
 var _isStrict = false;
-this.isStrict = function(){
+_p.isStrict = function(){
     return _isStrict;
 };
 /**
@@ -25,7 +26,7 @@ this.isStrict = function(){
  *        enable / disable "strict" mode for parsing
  * DEFAULT: disabled
  */
-this.setStrict = function(isEnabled){
+_p.setStrict = function(isEnabled){
     _isStrict = isEnabled;
 };
 
@@ -88,25 +89,25 @@ JSONValue
 JSONObject
     : '{' '}'
         {{$$ = {};
-            if(isLoc()) $$._loc = @1;//MOD:locInfo empty obj
+            if(_p.isLoc()) $$._loc = @1;//MOD:locInfo empty obj
         }}
     | '{' JSONMemberList '}'
         {$$ = $2;
-            if(isLoc()) $$._loc['_this'] = @2;//MOD:locInfo obj
+            if(_p.isLoc()) $$._loc['_this'] = @2;//MOD:locInfo obj
         }
     ;
 
 JSONMember
     : JSONString ':' JSONValue
         {$$ = [$1, $3];
-            if(isLoc()) $$._loc = [@1, @3];//MOD:locInfo member&value
+            if(_p.isLoc()) $$._loc = [@1, @3];//MOD:locInfo member&value
         }
     ;
 
 JSONMemberList
     : JSONMember
         {{$$ = {}; $$[$1[0]] = $1[1];
-            if(isLoc()){
+            if(_p.isLoc()){
                 $$._loc = @1;//MOD:locInfo member
                 $$._loc[ '_' + $1[0] ] = $1._loc;//MOD:locInfo member
                 }
@@ -115,7 +116,7 @@ JSONMemberList
         {
             $$ = $1;
 
-            if(isStrict()){//MOD: "strict" mode: reject duplicate key entries
+            if(_p.isStrict()){//MOD: "strict" mode: reject duplicate key entries
                 if(typeof $1[$3[0]] !== 'undefined'){
                     var pos = $3._loc? $3._loc[0] : @3;
 
@@ -134,28 +135,28 @@ JSONMemberList
 
             $1[$3[0]] = $3[1];
 
-            if(isLoc()) $$._loc[ '_' + $3[0] ] = $3._loc;//MOD:locInfo member-list
+            if(_p.isLoc()) $$._loc[ '_' + $3[0] ] = $3._loc;//MOD:locInfo member-list
         }
     ;
 
 JSONArray
     : '[' ']'
         {$$ = [];
-            if(isLoc()) $$._loc = [@1, @2];//MOD:locInfo empty array
+            if(_p.isLoc()) $$._loc = [@1, @2];//MOD:locInfo empty array
         }
     | '[' JSONElementList ']'
         {$$ = $2;
-            if(isLoc()) $$._loc['_this'] = [@1, @3];//MOD:locInfo array
+            if(_p.isLoc()) $$._loc['_this'] = [@1, @3];//MOD:locInfo array
         }
     ;
 
 JSONElementList
     : JSONValue
         {$$ = [$1];
-            if(isLoc()) $$._loc = {'_i0': @1};//MOD:locInfo array-entry
+            if(_p.isLoc()) $$._loc = {'_i0': @1};//MOD:locInfo array-entry
         }
     | JSONElementList ',' JSONValue
         {$$ = $1; $1.push($3);
-            if(isLoc())  $$._loc[ '_i' +  ($$.length - 1) ] = @3;//MOD:locInfo array-list-entry
+            if(_p.isLoc())  $$._loc[ '_i' +  ($$.length - 1) ] = @3;//MOD:locInfo array-list-entry
         }
     ;

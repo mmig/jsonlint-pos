@@ -51,14 +51,9 @@ var modPrefix = '/**\n\
  * MIT License\n\
 **/\n';
 
-//export enable/disable interface meta-data extraction
-var modPostfix = '\nexports.isLoc = isLoc;\nexports.setLocEnabled = setLocEnabled;\n'
-    + '\nexports.isStrict = isStrict;\nexports.setStrict = setStrict;\n';
-
 var source = modPrefix +
-    "var jsonlint = (function(){var require=true,module=false;var exports={};" +
+    "var jsonlint = (function(exports){var require=true,module=false;exports=exports||{};" +
     fs.readFileSync(__dirname+'/../lib/jsonlint-ext.js', 'utf8') +
-    modPostfix +
-    "return exports;})()";
+    "return exports;})(typeof module === 'object' && module.exports)";
 
 console.log(source);
