@@ -2,18 +2,35 @@
 %{
 
 // MODIFICATION russa: added position meta-data to parsed objects
-var _isLoc = false;
 var _p = parser;
-_p.isLoc = function(){
+var _isLoc = false;
+_p.getLoc = function(){
   return _isLoc;
 };
 /**
- * @param {boolean} isEnabled
- *        enable / disable extraction of position-information
+ * helper function: set location information for the parsed element
+ * @param  {any} t the parsed element
+ * @param  {position} loc the location information
+ * @param  {string} [sub] OPTIONAL name of the sub-field in <code>t</code> to which
+ *                        the location information should be stored to
+ * @param  {boolean} [subLoc] OPTIONAL if <code>true</code> the location information
+ *                            will be taken from the location sub-field of <code>loc</code>
+ */
+_p._loc = function(t, loc, sub, subLoc){
+    var l = _p.getLoc();
+    if(l) sub? (t[l][sub] = (subLoc? loc[l] : loc)) : (t[l] = (subLoc? loc[l] : loc));
+};
+/**
+ * @param {boolean|string} isEnabled
+ *        enable / disable extraction of position-information:
+ *        if <code>true</code> the default name "_loc" will be used, if a string
+ *        with length > 1 is given, location information will be stored to that
+ *        sub-field.
+ *        Will be disabled for FALSY values.
  * DEFAULT: disabled
  */
 _p.setLocEnabled = function(isEnabled){
-    _isLoc = isEnabled;
+    _isLoc = isEnabled === true? '_loc' : isEnabled;
 };
 
 // MODIFICATION russa: add "strict" parsing mode (e.g. reject duplicate key entries)
@@ -89,28 +106,28 @@ JSONValue
 JSONObject
     : '{' '}'
         {{$$ = {};
-            if(_p.isLoc()) $$._loc = @1;//MOD:locInfo empty obj
+            _p._loc($$, @1);//MOD:locInfo empty obj
         }}
     | '{' JSONMemberList '}'
         {$$ = $2;
-            if(_p.isLoc()) $$._loc['_this'] = @2;//MOD:locInfo obj
+            _p._loc($$, @2, '_this');//MOD:locInfo obj
         }
     ;
 
 JSONMember
     : JSONString ':' JSONValue
         {$$ = [$1, $3];
-            if(_p.isLoc()) $$._loc = [@1, @3];//MOD:locInfo member&value
+            _p._loc($$, [@1, @3]);//MOD:locInfo member&value
         }
     ;
 
 JSONMemberList
     : JSONMember
         {{$$ = {}; $$[$1[0]] = $1[1];
-            if(_p.isLoc()){
-                $$._loc = @1;//MOD:locInfo member
-                $$._loc[ '_' + $1[0] ] = $1._loc;//MOD:locInfo member
-                }
+            if(_p.getLoc()){
+                _p._loc($$, @1);//MOD:locInfo member
+                _p._loc($$, $1, '_' + $1[0], true);//MOD:locInfo member
+            }
         }}
     | JSONMemberList ',' JSONMember
         {
@@ -118,16 +135,20 @@ JSONMemberList
 
             if(_p.isStrict()){//MOD: "strict" mode: reject duplicate key entries
                 if(typeof $1[$3[0]] !== 'undefined'){
-                    var pos = $3._loc? $3._loc[0] : @3;
+                    var loc = _p.getLoc();
+                    var pos = $3[loc]? $3[loc][0] : @3;
 
-                    var errStr = 'Parse error in "strict" mode on line '+pos.first_line+': Duplicate property "'+$3[0]+'"';
+                    var locDupl = $3[0] === loc;
+                    var errStr = 'Parse error in "strict" mode on line '+pos.first_line+': Duplicate property "'+$3[0]+'"' +
+                                    (!locDupl? '' : ' (possibly colliding with property for location information)');
+
 
                     var err = new Error(errStr);
-                    if($3._loc){
+                    if($3[loc]){
                         err._loc = pos;
                     }
                     if($1._loc){
-                        err._locTo = $1._loc['_'+$3[0]][0];
+                        err._locTo = !locDupl? $1[loc]['_'+$3[0]][0] : $1[loc];
                     }
                     throw err;
                 }
@@ -135,28 +156,28 @@ JSONMemberList
 
             $1[$3[0]] = $3[1];
 
-            if(_p.isLoc()) $$._loc[ '_' + $3[0] ] = $3._loc;//MOD:locInfo member-list
+            _p._loc($$, $3, '_' + $3[0], true);//MOD:locInfo member-list
         }
     ;
 
 JSONArray
     : '[' ']'
         {$$ = [];
-            if(_p.isLoc()) $$._loc = [@1, @2];//MOD:locInfo empty array
+            _p._loc($$, [@1, @2]);//MOD:locInfo empty array
         }
     | '[' JSONElementList ']'
         {$$ = $2;
-            if(_p.isLoc()) $$._loc['_this'] = [@1, @3];//MOD:locInfo array
+            _p._loc($$, [@1, @3], '_this');//MOD:locInfo array
         }
     ;
 
 JSONElementList
     : JSONValue
         {$$ = [$1];
-            if(_p.isLoc()) $$._loc = {'_i0': @1};//MOD:locInfo array-entry
+            _p._loc($$, {'_i0': @1});//MOD:locInfo array-entry
         }
     | JSONElementList ',' JSONValue
         {$$ = $1; $1.push($3);
-            if(_p.isLoc())  $$._loc[ '_i' +  ($$.length - 1) ] = @3;//MOD:locInfo array-list-entry
+            _p._loc($$, @3, '_i' +  ($$.length - 1));//MOD:locInfo array-list-entry
         }
     ;

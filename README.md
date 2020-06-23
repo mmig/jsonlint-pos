@@ -130,7 +130,7 @@ the result for example above would be:
 }
 ```
 
-##### The loc Object
+##### The `loc` Object
 
 Each position/location information object consists of the following properties:
 ```javascript
@@ -142,7 +142,7 @@ Each position/location information object consists of the following properties:
 }
 ```
 
-##### loc for Properties
+##### `loc` for Properties
 
 Generally, the position information is stored in property `"_loc"`.
 
@@ -182,7 +182,7 @@ e.g.:
     "_this": { "first_line": ...
 ````
 
-##### loc for Array Entries
+##### `loc` for `Array` Entries
 
 Positions for array entries are noted in the array's `"_loc"` in sub-property: `"_" + <entry-index>`
 e.g.:
@@ -194,7 +194,23 @@ e.g.:
             ...
 ```
 
------
+##### Set custom field for `loc` Object
+
+The field name for the `loc` object can be set to something different than
+`_loc`, e.g. `__mycustom_name`:
+```javascript
+jsonlint.parser.setLocEnabled('__mycustom_name');
+```
+
+The currently set field name for `loc` can be retrieved using:
+```javascript
+var locFieldName = jsonlint.parser.getLoc();
+```
+
+NOTE for `FALSY` values, the location information will be disabled in parsing results
+
+
+--------------
 
 ### MOD: Strict parsing mode
 
@@ -230,13 +246,6 @@ try{
   console.log('property was already defined at line '+e._locTo.first_line);
 }
 ```
-
-
-## JSON Lint
-
-for more details of Command Line Interface (cli) etc. see the
-original site of the [JSON Lint parser](https://github.com/zaach/jsonlint/).
-
 
 ## MIT License
 
