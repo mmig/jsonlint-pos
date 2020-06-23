@@ -15,4 +15,3 @@ deploy: site
 
 test: lib/jsonlint-ext.js test/all-tests.js
 	node test/all-tests.js
-

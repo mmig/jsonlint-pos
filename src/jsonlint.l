@@ -21,4 +21,3 @@ frac  "."[0-9]+
 .        return 'INVALID'
 
 %%
-

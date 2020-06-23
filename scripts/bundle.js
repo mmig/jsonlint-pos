@@ -1,14 +1,14 @@
 var fs = require('fs');
 
-//russa: add some comments for documentation
+//MOD: add comments for documentating additional features
 var modPrefix = '/**\n\
  * Modified JSON Lint parser (by russa)\n\
  * \n\
  * Parser has a "strict" mode which will throw an Error in case duplicate properties are encountered, e.g.\n\
- * 	e.g.: {\n\
+ *  e.g.: {\n\
  *          "duplicate": false\n\
  *          "duplicate": true\n\
- * 	      }\n\
+ *        }\n\
  * will cause an Error in "strict" mode.\n\
  * \n\
  * \n\
@@ -17,18 +17,18 @@ var modPrefix = '/**\n\
  * \n\
  * Position information is stored in property "_loc".\n\
  * Positions for properties are noted in the object\'s "_loc" in sub-property: "_"+ property-name\n\
- * 	e.g.: {\n\
+ *  e.g.: {\n\
  *          "_loc": {\n\
  *             "_someProperty": {\n\
  *             ...\n\
  *              \n\
  * Positions for array entries are noted in the array\'s "_loc" in sub-property: "_"+ entry-index\n\
- * 	e.g.: {\n\
+ *  e.g.: {\n\
  *          "_loc": {\n\
  *             "_0": {\n\
  *             ...\n\
  * The object\'s / array\'s own position is noted in "_loc" in sub-property: "_this"\n\
- * 	e.g.: {\n\
+ *  e.g.: {\n\
  *          "_loc": {\n\
  *             "_this": { ...\n\
  * \n\
@@ -53,13 +53,12 @@ var modPrefix = '/**\n\
 
 //export enable/disable interface meta-data extraction
 var modPostfix = '\nexports.isLoc = isLoc;\nexports.setLocEnabled = setLocEnabled;\n'
-	+ '\nexports.isStrict = isStrict;\nexports.setStrict = setStrict;\n';
+    + '\nexports.isStrict = isStrict;\nexports.setStrict = setStrict;\n';
 
 var source = modPrefix +
-  "var jsonlint = (function(){var require=true,module=false;var exports={};" +
-  fs.readFileSync(__dirname+'/../lib/jsonlint-ext.js', 'utf8') +
-  modPostfix +
-  "return exports;})()";
+    "var jsonlint = (function(){var require=true,module=false;var exports={};" +
+    fs.readFileSync(__dirname+'/../lib/jsonlint-ext.js', 'utf8') +
+    modPostfix +
+    "return exports;})()";
 
 console.log(source);
-

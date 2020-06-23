@@ -16,21 +16,21 @@ Modified JSON parser with:
  * [additional location information](#mod-location-information) (i.e. position of objects within parsed string)
  * [`strict` parsing mode](#mod-strict-parsing-mode) which
    * will throw an error if JSON object has duplicate keys
-   * _TODO: add features for strict parsing mode(?)_ 
+   * _TODO: add features for strict parsing mode(?)_
 
 -----
 
-### MOD: Location Information 
+### MOD: Location Information
 
 The parser returns position information for parsed JSON objects, i.e.
 the location for JSON properties and values within the input-string that is parsed.
 
 
-_Location information_ - i.e. the position, where a data-property is located 
+_Location information_ - i.e. the position, where a data-property is located
 within the String - may be useful, if you code a JSON editor and want to
-annotate data-properties; and then show/indicate which properties have annotations 
+annotate data-properties; and then show/indicate which properties have annotations
 in your editor.
-Another example would be, if you want to define a data format that puts 
+Another example would be, if you want to define a data format that puts
 additional constraints on the JSON data.
 Then you could write a verifier which uses the _location information_ in case
 one of these additional restrictions was not satisfied in order to show,
@@ -92,15 +92,15 @@ the result for example above would be:
     }
   }
 }
-``` 
+```
 
 ##### The loc Object
 
 Each position/location information object consists of the following properties:
 ```javascript
-{ 
+{
   "first_line"   : NUMBER
-  "last_line"    : NUMBER 
+  "last_line"    : NUMBER
   "first_column" : NUMBER
   "last_column"  : NUMBER
 }
@@ -113,12 +113,12 @@ Generally, the position information is stored in property `"_loc"`.
 Positions for **properties** are noted in the object's `"_loc"`-property
 within sub-property: `"_" + <property-name>`.
 
-For a property, the location information is an array with 2 location-entries: 
+For a property, the location information is an array with 2 location-entries:
 the first entry _locates_ the property-name and the second one the property-value
 
 Note: if the value does not have a primitive type, then the value-entry will actually be not
  a `loc` information object, but contain itself the value's location information via sub-properties;
- in this case, the `loc` for the value-object itself will be contained in the special sub-property `"_this"`. 
+ in this case, the `loc` for the value-object itself will be contained in the special sub-property `"_this"`.
 See the additional information below: `loc` for [Arrays and Objects](loc-for-arrays-and-objects) and
 `loc` for [Arrays Entries](loc-for-array-entries).
 
@@ -154,7 +154,7 @@ e.g.:
 {
   "_loc": {
     "_0": { "first_line": ...
-    "_1": { "first_line": ... 
+    "_1": { "first_line": ...
             ...
 ```
 
@@ -180,7 +180,7 @@ jsonlint.parse('{"duplicate": false, "duplicate": true}');
 
 If `setLocEnabled` is set to `true`, the error will contain additional location
 information (see also [loc properties](#the-loc-properties) above):
- * `_loc`: position of the offending property 
+ * `_loc`: position of the offending property
  * `_locTo`: position of the first declaration of the property
 
 Example for error with additional location information:
@@ -198,7 +198,7 @@ try{
 
 ## JSON Lint
 
-for more details of Command Line Interface (cli) etc. see the 
+for more details of Command Line Interface (cli) etc. see the
 original site of the [JSON Lint parser](https://github.com/zaach/jsonlint/).
 
 

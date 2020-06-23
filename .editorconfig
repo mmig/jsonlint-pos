@@ -1,0 +1,37 @@
+# EditorConfig helps developers define and maintain consistent coding styles between different editors and IDEs
+# editorconfig.org
+
+root = true
+
+[*]
+indent_style = space
+indent_size = 4
+
+# We recommend you to keep these unchanged
+end_of_line = lf
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+[*.{js,ts,css}]
+# C-style doc comments
+block_comment_start = /*
+block_comment = *
+block_comment_end = */
+
+[*.md]
+trim_trailing_whitespace = false
+
+[{package*,typedoc}.json]
+insert_final_newline = false
+
+[Makefile]
+indent_style = tab
+
+[test/{fails,passes}/**]
+indent_style = unset
+indent_size = unset
+end_of_line = unset
+charset = unset
+trim_trailing_whitespace = unset
+insert_final_newline = unset
