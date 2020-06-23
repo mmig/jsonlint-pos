@@ -80,7 +80,7 @@ Enable extraction of position information:
 var jsonlint = require("jsonlint");
 
 //enable meta-data extraction (i.e. the location information):
-jsonlint.setLocEnabled(true);
+jsonlint.parser.setLocEnabled(true);
 
 var data = jsonlint.parse('{"creative?": false}');
 
@@ -204,7 +204,7 @@ Enable `strict` parsing mode:
 var jsonlint = require("jsonlint");
 
 //enable meta-data extraction (i.e. the location information):
-jsonlint.setStrict(true);
+jsonlint.parser.setStrict(true);
 
 //OK
 var data = jsonlint.parse('{"creative?": false}');
@@ -222,7 +222,7 @@ information (see also [loc properties](#the-loc-properties) above):
 Example for error with additional location information:
 ```javascript
 ...
-jsonlint.setLocEnabled(true);
+jsonlint.parser.setLocEnabled(true);
 try{
   jsonlint.parse('{\n  "duplicate": false,\n  "duplicate": true\n}');
 } catch (e){
