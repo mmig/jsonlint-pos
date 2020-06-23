@@ -20,6 +20,42 @@ Modified JSON parser with:
 
 -----
 
+## Command line interface
+Install jsonlint with npm to use the command line interface:
+
+    npm install -g git+https://github.com/russaa/jsonlint-ext
+
+Validate a file like so:
+
+    jsonlint myfile.json
+
+or pipe input into stdin:
+
+    cat myfile.json | jsonlint
+
+jsonlint will either report a syntax error with details or pretty print the source if it is valid.
+
+### Options
+
+    $ jsonlint -h
+
+    Usage: jsonlint [file] [options]
+
+    file     file to parse; otherwise uses stdin
+
+    Options:
+       -v, --version            print version and exit
+       -s, --sort-keys          sort object keys
+       -i, --in-place           overwrite the file
+       -t CHAR, --indent CHAR   character(s) to use for indentation  [  ]
+       -c, --compact            compact error display
+       -V, --validate           a JSON schema to use for validation
+       -e, --environment        which specification of JSON Schema the validation file uses  [json-schema-draft-03]
+       -q, --quiet              do not print the parsed json to STDOUT  [false]
+       -p, --pretty-print       force pretty printing even if invalid
+       -l, --location           include location information in the result [false]
+       -S, --strict             parse in strict mode, e.g. disallow duplicate keys [false]
+
 ### MOD: Location Information
 
 The parser returns position information for parsed JSON objects, i.e.
