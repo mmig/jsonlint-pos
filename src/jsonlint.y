@@ -18,8 +18,33 @@ _p.getLoc = function(){
  */
 _p._loc = function(t, loc, sub, subLoc){
     var l = _p.getLoc();
-    if(l) sub? (t[l][sub] = (subLoc? loc[l] : loc)) : (t[l] = (subLoc? loc[l] : loc));
+    if(l) {
+        var locVal = subLoc? loc[l] : loc;
+        _p._checkLoc(t, l, sub, locVal);
+        sub? (t[l][sub] = locVal) : (t[l] = locVal);
+    }
 };
+/**
+ * helper function:
+ * do ensure that location information will not overwrite anything in strict mode
+ *
+ * @throws {Error} if strict mode is enabled and position information
+ *                 would overwrite the targeted field
+ */
+_p._checkLoc = function(t, l, sub, locVal){
+    if(_p.isStrict()){
+        var val = sub? t[l][sub] : t[l];
+        if(typeof val !== 'undefined'){
+            var pos = locVal && !locVal.first_line? locVal[0] : locVal;
+            var errStr = 'Parse error in "strict" mode on line '+pos.first_line+
+                            ': Cannot add location information to "'+l+'", because' +
+                            ' the property already exists.';
+            var err = new Error(errStr);
+            err._loc = pos;
+            throw err;
+        }
+    }
+}
 /**
  * @param {boolean|string} isEnabled
  *        enable / disable extraction of position-information:
