@@ -1,0 +1,126 @@
+
+html,body {
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+
+#full {
+    height: 100%;
+}
+.grid {
+    display: inline-table;
+}
+.grid-cell {
+    display: table-cell;
+    vertical-align: bottom;
+}
+
+code {
+    white-space: pre;
+}
+
+.key {
+    border: 1px solid gray;
+    border-radius: 2px;
+    padding: 2px;
+    font-family:monospace;
+    font-weight: bold;
+}
+
+.hidden {
+    display: none;
+}
+
+.text.hint {
+    font-weight: lighter;
+}
+
+.text.sub-caption {
+    font-variant: small-caps;
+    font-weight: bold;
+    font-size: larger;
+}
+
+.text.warning {
+    color: red;
+}
+
+.text.small {
+    font-size:x-small;
+}
+
+.function-list li {
+    line-height: 2em;
+}
+
+
+.console {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+.console.info{
+    background-color: #CCE7FF;
+}
+.console.warn{
+    background-color: #FFF0A8;
+}
+.console.error{
+    background-color: #FFC6C6;
+}
+
+.editor {
+    width: 100%;
+    height: 70%;
+}
+
+.annotationOverview.grammar.structure {
+    background-color: #EDFFF6;/*7CA6EA;*/
+    border: 1px solid #ADFFDA;/*5976A8;*/
+}
+
+/* DISABLED */
+.annotationHTML.grammar.structure {
+    /*
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyNpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDE0IDc5LjE1MTQ4MSwgMjAxMy8wMy8xMy0xMjowOToxNSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChNYWNpbnRvc2gpIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOkREMTE1OUNDMUVDMjExRTM4NDU4RjQ3Q0I3NkI4OTBDIiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOkREMTE1OUNEMUVDMjExRTM4NDU4RjQ3Q0I3NkI4OTBDIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6REQxMTU5Q0ExRUMyMTFFMzg0NThGNDdDQjc2Qjg5MEMiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6REQxMTU5Q0IxRUMyMTFFMzg0NThGNDdDQjc2Qjg5MEMiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz4Kzt/qAAAA0ElEQVR42mL8//8/AyWAiYFCQLEBLLgkfl8obARSZUD8HYiLWQ3652NTx4gtDICao4HUbCDeBRVyBmI3oCHHCRoA1MwOpO4A8V+gBgWo2AMg9QaITYFi/wl5IRaIZYD4K1AjI8gSIBYBYnkg9gLirYQCMRdKc0M1KUDZIFCM1wtAG02B1Ckk+WlQSzKQxLSA3riOywUpaHxHILZHE8vA54VQNL4XFCODaHyB+B6IBZH4s7CE0Ud8LvCHhsFfKN8VihmgYqegavAnpKGVmQACDACxJDv3vmRk+gAAAABJRU5ErkJggg==');
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAc0lEQVR4nMXSOw4CMQwE0JcoUFNxARoOx1mo9nZwEbJIocDFlkFG2pEsjwv/xi6WIYOGS/gHTjj/kN8bnhFccQubRsUa/L3h0xOUrAYVHcNXi3vwWes11R67r/CqOESxtuGzOBbLSD1SWsTdP3H9yxlT+AADnDUbP5B3BgAAAABJRU5ErkJggg==');
+            font-awesome icon fa-list, 16x16, #adffda:
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAc0lEQVR4nMWSuw2AMAxEX6JATcUCNAzHLGyShQKLkCCFAhcpjYyUkyyfC//OdrEmLAjAIv4AJmD+kJ8DcEqwApuYGh4owu+GqydwVg08kIHKq8UuXGvZm9oD3Ve4PDBIsdBwLUYXazI9klnE7p9YfjmjCQ/XRTnaHNlS4gAAAABJRU5ErkJggg==');
+    */
+    /* font-awesome icon fa-list, 14x14, #adffda: */
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAANUlEQVR4nGNc+/8WAzmAhYGB4TeUzQplsxCh7w8TWdZBTWdF4rPiUohN46hT8dg43J1Kto0AvwIOxqd4+mcAAAAASUVORK5CYII=');
+}
+
+
+#result {
+    padding: 1em;
+    border: 2px solid #ddd;
+    margin-top: 0.5em;
+    padding: 0.4em;
+    padding-left: 1em;
+}
+
+#result legend {
+    color: black;
+}
+
+#result .text {
+    display: block;
+    font-family: monospace;
+    white-space: pre;
+    margin: 1em 0;
+}
+
+.pass {
+    background-color: #efe;
+    color: #393;
+    border-color: #393 !important;
+}
+.fail {
+    background-color: #fee;
+    color: #933;
+    border-color: #933 !important;
+}
+#info{
+    margin: 0px 0px 0px 1em;
+}
