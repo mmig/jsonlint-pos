@@ -48,7 +48,7 @@ function(require, $, validationUtil, jsonlint, waitDialog
 
                 var isLoc = options.isLoc();
                 if (isLoc) {
-                    jsonlint.parser.setLocEnabled(options.getLocField());//enable extraction of location meta data
+                    jsonlint.parser.setLocEnabled(options.getLocField() || true);//enable extraction of location meta data
                 }
                 else {
                     jsonlint.parser.setLocEnabled(false);//enable extraction of location meta data
