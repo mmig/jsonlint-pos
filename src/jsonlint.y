@@ -147,7 +147,7 @@ JSONMemberList
                     if($3[loc]){
                         err._loc = pos;
                     }
-                    if($1._loc){
+                    if($1[loc]){
                         err._locTo = !locDupl? $1[loc]['_'+$3[0]][0] : $1[loc];
                     }
                     throw err;
