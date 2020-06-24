@@ -1,7 +1,9 @@
 /**
- * Modified JSON Lint parser (by russa)
+ * Modified JSON Lint parser
+ * https://github.com/russaa/jsonlint-ext
+ * MIT License
  * 
- * Parser has a "strict" mode which will throw an Error in case duplicate properties are encountered, e.g.
+ * The parser has a "strict" mode which will throw an Error in case duplicate properties are encountered, e.g.
  *  e.g.: {
  *          "duplicate": false
  *          "duplicate": true
@@ -38,11 +40,7 @@
  * }
  * 
  * 
- * 
- * NOTE: for modifications, see code comments with "\\MOD russa ..."
- * 
  * based on:
- * 
  * JSON Lint Parser gratefully provided by Zach Carter
  * https://github.com/zaach/jsonlint
  * MIT License
@@ -143,13 +141,19 @@ var $0 = $$.length - 1;
 switch (yystate) {
 case 1:
  // replace escaped characters with actual character
-          this.$ = yytext.replace(/\\(\\|")/g, "$"+"1")
-                     .replace(/\\n/g,'\n')
-                     .replace(/\\r/g,'\r')
-                     .replace(/\\t/g,'\t')
-                     .replace(/\\v/g,'\v')
-                     .replace(/\\f/g,'\f')
-                     .replace(/\\b/g,'\b');
+          this.$ = yytext.replace(/\\([\"\\\/bfnrt]|u[0-9a-fA-f]{4})/g, function(match, part) {
+                if(part.charAt(0) === 'u') {
+                    return String.fromCharCode(parseInt(part.substr(1),16));
+                }
+                switch(part) {
+                  case 'b':return '\b';
+                  case 'f':return '\f';
+                  case 'n':return '\n';
+                  case 'r':return '\r';
+                  case 't':return '\t';
+                  case '"':case '\\':case '/':return part;
+                }
+            });
         
 break;
 case 2:
@@ -409,8 +413,33 @@ _p.getLoc = function(){
  */
 _p._loc = function(t, loc, sub, subLoc){
     var l = _p.getLoc();
-    if(l) sub? (t[l][sub] = (subLoc? loc[l] : loc)) : (t[l] = (subLoc? loc[l] : loc));
+    if(l) {
+        var locVal = subLoc? loc[l] : loc;
+        _p._checkLoc(t, l, sub, locVal);
+        sub? (t[l][sub] = locVal) : (t[l] = locVal);
+    }
 };
+/**
+ * helper function:
+ * do ensure that location information will not overwrite anything in strict mode
+ *
+ * @throws {Error} if strict mode is enabled and position information
+ *                 would overwrite the targeted field
+ */
+_p._checkLoc = function(t, l, sub, locVal){
+    if(_p.isStrict()){
+        var val = sub? t[l][sub] : t[l];
+        if(typeof val !== 'undefined'){
+            var pos = locVal && !locVal.first_line? locVal[0] : locVal;
+            var errStr = 'Parse error in "strict" mode on line '+pos.first_line+
+                            ': Cannot add location information to "'+l+'", because' +
+                            ' the property already exists.';
+            var err = new Error(errStr);
+            err._loc = pos;
+            throw err;
+        }
+    }
+}
 /**
  * @param {boolean|string} isEnabled
  *        enable / disable extraction of position-information:
@@ -808,23 +837,9 @@ function Parser () {
 Parser.prototype = parser;parser.Parser = Parser;
 return new Parser;
 })();
-
-
-if (typeof require !== 'undefined' && typeof exports !== 'undefined') {
 exports.parser = jsonlint;
 exports.Parser = jsonlint.Parser;
 exports.parse = function () { return jsonlint.parse.apply(jsonlint, arguments); };
-exports.main = function commonjsMain (args) {
-    if (!args[1]) {
-        console.log('Usage: '+args[0]+' FILE');
-        process.exit(1);
-    }
-    var source = require('fs').readFileSync(require('path').normalize(args[1]), "utf8");
-    return exports.parser.parse(source);
-};
-if (typeof module !== 'undefined' && require.main === module) {
-  exports.main(process.argv.slice(1));
-}
-}
+
 return exports;
 }));
