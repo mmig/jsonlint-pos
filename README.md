@@ -1,18 +1,24 @@
-JSON Lint (EXTENDED)
+JSON Lint Position
 =========
+[![MIT license](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+[![GitHub package.json version](https://img.shields.io/github/package-json/v/mmig/jsonlint-pos/master)](https://github.com/mmig/jsonlint-pos)
+[![npm](https://img.shields.io/npm/v/jsonlint-pos)](https://www.npmjs.com/package/jsonlint-pos)
 
-A modified version of the JavaScript [JSON parser](https://github.com/zaach/jsonlint/) by Z. Carter.
+A modified version of the JavaScript [JSON parser][1] by Z. Carter.
+
+This JSON parser allows to extract the _position_ information and offers a _strict_
+mode (disallowing duplicate property names). For more details, see below.
 
 ## Demo
-Try the **[JSON Editor Demo](https://mmig.github.io/jsonlint-pos/example/)** that uses the modified JSON parser:\
+Try the **[JSON Editor Demo][2]** that uses the modified JSON parser:\
 the demo page uses the _position information_ for marking JSON errors in an editor.
 In addition, you can try out the extended options of the JSON verifier, e.g. with/without
 `strict` mode (see details below).
 
-Or the small, very _[Simple Demo](https://mmig.github.io/jsonlint-pos/example/jsonlint.html)_ which also allows to try out the _strict_ and extracting then
-position information.
+Or the small, very _[Simple Demo][3]_ which also allows to try out the _strict_
+and extracting then position information.
 
-EXTENSION (russa)
+EXTENSION
 ----
 
 Modified JSON parser with:
@@ -160,8 +166,8 @@ the first entry _locates_ the property-name and the second one the property-valu
 Note: if the value does not have a primitive type, then the value-entry will actually be not
  a `pos` information object, but contain itself the value's position information via sub-properties;
  in this case, the `pos` for the value-object itself will be contained in the special sub-property `"_this"`.
-See the additional information below: `pos` for [Arrays and Objects](pos-for-arrays-and-objects) and
-`pos` for [Arrays Entries](pos-for-array-entries).
+See the additional information below: `pos` for [Arrays and Objects](#pos-for-arrays-and-objects) and
+`pos` for [Arrays Entries](#pos-for-array-entries).
 
 
 For example, the result for `{"someProperty":...}` would look something like:
@@ -260,7 +266,7 @@ Copyright (C) 2014-2020 DFKI GmbH, Deutsches Forschungszentrum fuer Kuenstliche 
 
 
 
-based on [JSON Lint](https://github.com/zaach/jsonlint) by
+based on [JSON Lint][1] by
 
 Copyright (C) 2012 Zachary Carter
 
@@ -269,3 +275,9 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+----
+
+[1]: https://github.com/zaach/jsonlint/
+[2]: https://mmig.github.io/jsonlint-pos/example/
+[3]: https://mmig.github.io/jsonlint-pos/example/jsonlint.html
