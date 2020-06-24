@@ -27,8 +27,8 @@
   },
   "dependencies": {
     "JSV": ">= 4.0.x",
-    "chalk": "^4.1.0",
-    "underscore": "^1.10.2"
+    "chalk": "^4.1.0"
+    "lodash": "^4.17.15"
   },
   "devDependencies": {
     "jison": "^0.4.18",
