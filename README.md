@@ -3,13 +3,13 @@ JSON Lint (EXTENDED)
 
 A modified version of the JavaScript [JSON parser](https://github.com/zaach/jsonlint/) by Z. Carter.
 
-Try a **demo** for the modified JSON parser [jsonlint-ext](https://russaa.github.io/jsonlint-ext/):
-the demo page uses the _location information_ for marking JSON errors in an editor;
-in addition you can (manually) try the extended options of the JSON verifier, e.g. with/without
+Try a **demo** for the modified JSON parser, **[JSON Editor Demo](https://russaa.github.io/jsonlint-ext/example/)**:\
+the demo page uses the _location information_ for marking JSON errors in an editor.
+In addition, you can try out the extended options of the JSON verifier, e.g. with/without
 `strict` mode (see details below).
 
 
-MODIFICATION (russa)
+EXTENSION (russa)
 ----
 
 Modified JSON parser with:
@@ -56,7 +56,9 @@ jsonlint will either report a syntax error with details or pretty print the sour
        -l, --location           include location information in the result [false]
        -S, --strict             parse in strict mode, e.g. disallow duplicate keys [false]
 
-### MOD: Location Information
+------
+
+### EXT: Location Information
 
 The parser returns position information for parsed JSON objects, i.e.
 the location for JSON properties and values within the input-string that is parsed.
@@ -194,7 +196,7 @@ e.g.:
             ...
 ```
 
-##### Set custom field for `loc` Object
+##### Set custom field name for the `loc` Object
 
 The field name for the `loc` object can be set to something different than
 `_loc`, e.g. `__mycustom_name`:
@@ -212,7 +214,7 @@ NOTE for `FALSY` values, the location information will be disabled in parsing re
 
 --------------
 
-### MOD: Strict parsing mode
+### EXT: Strict parsing mode
 
 Enable `strict` parsing mode:
 ```javascript
