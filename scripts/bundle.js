@@ -1,31 +1,52 @@
-var fs = require('fs');
+
+var fs = require('fs-extra');
 var path = require('path');
+var uglify = require('uglify-js');
 
 var template = require('./template');
 
 function bundle(srcPath){
 
-    var srcFile = fs.existsSync(srcPath)? fs.readFileSync(srcPath, 'utf8') : srcPath;
+    var promise = fs.existsSync(srcPath)? fs.readFile(srcPath, 'utf8') : Promise.resolve(srcPath);
 
-    var source = template.preamble + template.umdHeader +
-        srcFile +
-        template.moduleExports + template.umdFooter;
+    return promise.then(function(srcFile){
+        var source = template.preamble + template.umdHeader +
+            srcFile +
+            template.moduleExports + template.umdFooter;
 
-    return source;
+        return source;
+    });
 }
 
 function bundleTo(srcPath, targets){
-    var source = bundle(srcPath);
-    var t;
-    for(var i=0,size=targets.length; i < size; ++i){
-        t = targets[i];
-        fs.writeFileSync(path.resolve(__dirname, '..', t), source);
-    }
+    return bundle(srcPath).then(function(source){
+        var t, files = [];
+        if(!Array.isArray(targets)){
+            targets = [targets];
+        }
+        for(var i=0,size=targets.length; i < size; ++i){
+            t = targets[i];
+            files.push(fs.writeFile(path.resolve(__dirname, '..', t), source));
+        }
+        return Promise.all(files).then(function(){
+            return source;
+        });
+    });
+}
+
+function minifySync(code, targetFileName){
+    return uglify.minify(code, {
+        sourceMap: {
+            filename: targetFileName,
+            url: targetFileName + '.map'
+        }
+    });
 }
 
 module.exports = {
     bundle: bundle,
-    bundleTo: bundleTo
+    bundleTo: bundleTo,
+    minifySync: minifySync
 }
 
 if (require.main === module) {
@@ -33,7 +54,9 @@ if (require.main === module) {
     if(process.argv.length === 2){
 
         var srcPath = path.resolve(__dirname, '..', 'jsonlint.js');
-        console.log(bundle(srcPath));
+        bundle(srcPath).then(function(src){
+            console.log(src);
+        });
 
     } else {
 
