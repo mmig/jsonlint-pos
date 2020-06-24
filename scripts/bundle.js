@@ -1,7 +1,7 @@
 var fs = require('fs');
 
 //MOD: add comments for documentating additional features
-var modPrefix = '/**\n\
+var preamble = '/**\n\
  * Modified JSON Lint parser (by russa)\n\
  * \n\
  * Parser has a "strict" mode which will throw an Error in case duplicate properties are encountered, e.g.\n\
@@ -51,9 +51,18 @@ var modPrefix = '/**\n\
  * MIT License\n\
 **/\n';
 
-var source = modPrefix +
-    "var jsonlint = (function(exports){var require=true,module=false;exports=exports||{};" +
-    fs.readFileSync(__dirname+'/../lib/jsonlint-ext.js', 'utf8') +
-    "return exports;})(typeof module === 'object' && module.exports)";
+var umdHeader = ";(function (root, factory) {\n\
+  if (typeof define === 'function' && define.amd) {\n\
+    define(['require','module','exports'], function(require,module,exports){return factory(require,module,exports);});\n\
+  } else if (typeof module === 'object' && module.exports) {\n\
+    module.exports = factory(require,module,exports);\n\
+  } else {\n\
+    root.jsonlint = factory(true,false,{});\n\
+  }\n\
+}(typeof window !== 'undefined' ? window : typeof self !== 'undefined' ? self : typeof global !== 'undefined' ? global : this, function (require, module, exports) {\n";
+var umdFooter = "\nreturn exports;\n}));";
+
+var source = preamble + umdHeader +
+    fs.readFileSync(__dirname+'/../lib/jsonlint-ext.js', 'utf8') + umdFooter;
 
 console.log(source);
