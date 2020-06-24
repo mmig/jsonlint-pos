@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+
+    <title>JSON Lint Editor Example</title>
+
+    <link rel="stylesheet" href="json-editor/css/built-editor.css" />
+    <link rel="stylesheet" href="json-editor/css/app.css" />
+
+    <script type="text/javascript" src="json-editor/libs/require.js"></script>
+    <script type="text/javascript" src="json-editor/config.js"></script>
+
+</head>
+
+<body>
+
+  <h1>JSON Lint EXT</h1>
+  <div>
+    <p>
+        Example for the <em>Extended JSON parser</em>: the editor uses the <em>location information</em>
+        for marking JSON errors within the editor-view.
+        <br/>
+        Enabling <em>strict mode</em> will give an error, if the JSON contains duplicate properties.
+        <br/>
+        <em><small>
+            NOTE: The editor demo is based on the <a href="http://esprima.org/demo/validate.html">Esprima Demo</a>
+                  using the JavaScript editor component of <a href="https://wiki.eclipse.org/Orion">Orion</a>.
+        </small></em>
+    </p>
+  </div>
+  <div>
+    <button id="button">Validate</button>
+    <input type="checkbox" value="yes" id="reformat" /><label for="reformat"> reformat JSON</label>
+
+    <em>
+        <input type="checkbox" value="yes" id="strict-mode" checked="checked" />
+        <label for="strict-mode" title="will cause errors for duplicate properties"> use <u>strict</u> parsing mode</label>
+    </em>
+
+    <em>
+        <input type="checkbox" value="yes" id="extract-loc" />
+        <label for="extract-loc" title="attaches position data to parsed objects"> extract <u>location information</u> as meta data</label>
+    </em>
+
+
+
+    <fieldset id="advanved-options-container">
+        <em>
+            <input type="checkbox" value="yes" id="advanced-options" />
+            <label for="advanced-options"> show advanved options for <u>location information</u></label>
+        </em>
+
+        <ul id="advanved-options-set">
+            <li><em>
+                <input type="checkbox" value="yes" id="convert-array" checked="checked" />
+                <label for="convert-array" title="if positions are enabled do convert arrays to make position information visible">
+                    convert arrays if <u>location information</u> and <u>reformatting</u> is enabled
+                </label>
+            </em></li>
+
+            <li><em>
+                <label for="loc-field" placeholder="default" title="name of the field into which position information will be stored">
+                    field name for <u>location information</u>:
+                </label>
+                <input type="text" id="loc-field" />
+            </em></li>
+        </ul>
+    </fieldset>
+
+    <fieldset id="result">
+        <legend>Validation Results</legend>
+        <div class="text">&nbsp;</div>
+    </fieldset>
+
+  </div>
+
+  <hr/>
+
+<!-- editor element / placeholder -->
+<pre id="inputBox" class="editor">
+{
+
+ "duplicate_property": "first value!",
+
+ "duplicate_property": ["second",
+ "value",
+ 3]}
+</pre>
+
+<hr/>
+<p id="info"><a href="https://github.com/russaa/jsonlint-ext">project on github</a>
+  <em><small>(based on <a href="https://github.com/zaach/jsonlint">jsonlint@github</a>)</small></em>
+</p>
+
+<!-- ################### SECTION: Popup dialogs & tooltip dialogs ################################# -->
+<div id="dialogs" style="display:none">
+
+    <div id="errorPopup" class="ui-content ui-corner-all">
+        <div id="errorPopupTitle" class="hidden">
+            <div> <i></i> &nbsp;<span>a short title</span></div>
+        </div>
+        <div id="errorPopupContent" class="ui-content ui-corner-bottom ui-content">
+            <h3 class="ui-title" id="errorPopupCaption">short description or question.</h3>
+            <div id="errorPopupText">detailed description</div>
+        </div>
+    </div>
+
+    <div id="infoPopup"class="ui-content ui-corner-all">
+        <div id="infoPopupTitle" class="hidden">
+            <div> <i></i> &nbsp;<span>a short title</span></div>
+        </div>
+        <div id="infoPopupContent" class="ui-content ui-corner-bottom ui-content">
+            <div id="infoPopupText">information text</div>
+        </div>
+    </div>
+
+    <div id="popupAppHelpInfo" class="ui-content" data-title="Quick Reference">
+      <div><!-- h3>Quick Reference</h3-->
+
+        <h5>Editor Shortcuts</h5>
+        <ul class="function-list">
+            <li><span class="key">CTRL</span> + <span class="key">#</span>: comment / un-comment line</li>
+            <li><span class="key">CTRL</span> + <span class="key">a</span>: select all</li>
+            <li><span class="key">CTRL</span> + <span class="key">d</span>: delete line</li>
+            <li><span class="key">CTRL</span> + <span class="key">f</span>: search / replace dialog</li>
+            <li><span class="key">CTRL</span> + <span class="key">l</span>: "go to line" dialog</li>
+            <li><span class="key">CTRL</span> + <span class="key">q</span>: jump to last edited position</li>
+
+            <li><span class="key">CTRL</span> + <span class="key">y</span>: redo</li>
+            <li><span class="key">CTRL</span> + <span class="key">z</span>: undo</li>
+        </ul>
+        <br/><br/>
+      </div>
+    </div>
+
+</div>
+
+</body>
+</html>
