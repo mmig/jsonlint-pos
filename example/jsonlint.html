@@ -2,9 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>JSON Lint EXT</title>
-    <script src="json2.js"></script>
-    <script src="jsonlint-ext.js"></script>
+    <title>SIMPLE JSON Lint EXT Demo</title>
+    <script src="../web/jsonlint-ext.js"></script>
     <script>
       window.onload = function () {
         jsonlint.parser.setLocEnabled(true);//enable extraction of location meta data
@@ -31,7 +30,7 @@
               if (document.getElementById("reformat").checked) {
                 var func = !jsonlint.parser.getLoc()? null : function(n,v){
                   if(Array.isArray(v)){
-                    var obj = {};
+                    var obj =  {_type: 'Array'};
                     obj[jsonlint.parser.getLoc()] = v[jsonlint.parser.getLoc()];
                     for(var i=0,s=v.length;i<s;++i) obj[i]=v[i];
                     return obj;
@@ -79,12 +78,21 @@
                 <li>using this option in combination with <u>reformat JSON</u> will display the
                     <em>location information</em> in the input box.
                 </li>
+                <li><u>NOTE</u> that <u>reformatting</u> will also convert arrays to Objects
+                    in order to make the location information visible in the returned JSON object.
+                </li>
             </ul>
         </li>
     </ul>
   </div>
   <textarea id="source" rows="20" cols="50">
+{
 
+"duplicate_property": "first value!",
+
+"duplicate_property": ["second",
+"value",
+3]}
   </textarea>
   <p>
     <button id="button">Validate</button>
