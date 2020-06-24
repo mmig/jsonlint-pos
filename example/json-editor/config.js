@@ -10,7 +10,7 @@
             }
         },
         paths : {
-            'jsonlint': '../web/jsonlint-ext'
+            'jsonlint': '../web/jsonlint-pos'
             // libraries:
             , 'jquery': 'json-editor/libs/jquery-3.5.1.min'
             , 'esprima' : 'json-editor/libs/esprima'

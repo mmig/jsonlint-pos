@@ -3,18 +3,21 @@ JSON Lint (EXTENDED)
 
 A modified version of the JavaScript [JSON parser](https://github.com/zaach/jsonlint/) by Z. Carter.
 
-Try a **demo** for the modified JSON parser, **[JSON Editor Demo](https://russaa.github.io/jsonlint-ext/example/)**:\
-the demo page uses the _location information_ for marking JSON errors in an editor.
+## Demo
+Try the **[JSON Editor Demo](https://mmig.github.io/jsonlint-pos/example/)** that uses the modified JSON parser:\
+the demo page uses the _position information_ for marking JSON errors in an editor.
 In addition, you can try out the extended options of the JSON verifier, e.g. with/without
 `strict` mode (see details below).
 
+Or the small, very _[Simple Demo](https://mmig.github.io/jsonlint-pos/example/jsonlint.html)_ which also allows to try out the _strict_ and extracting then
+position information.
 
 EXTENSION (russa)
 ----
 
 Modified JSON parser with:
- * [additional location information](#mod-location-information) (i.e. position of objects within parsed string)
- * [`strict` parsing mode](#mod-strict-parsing-mode) which
+ * [additional position information](#ext-position-information) (i.e. position of objects within parsed string)
+ * [`strict` parsing mode](#ext-strict-parsing-mode) which
    * will throw an error if JSON object has duplicate keys
    * _TODO: add features for strict parsing mode(?)_
 
@@ -23,7 +26,7 @@ Modified JSON parser with:
 ## Command line interface
 Install jsonlint with npm to use the command line interface:
 
-    npm install -g git+https://github.com/russaa/jsonlint-ext
+    npm install -g jsonlint-pos
 
 Validate a file like so:
 
@@ -53,15 +56,15 @@ jsonlint will either report a syntax error with details or pretty print the sour
        -e, --environment        which specification of JSON Schema the validation file uses  [json-schema-draft-03]
        -q, --quiet              do not print the parsed json to STDOUT  [false]
        -p, --pretty-print       force pretty printing even if invalid
-       -l, --location           include location information in the result [false]
+       -P, --position           include position information in the result [false]
        -S, --strict             parse in strict mode, e.g. disallow duplicate keys [false]
 
 ------
 
-### EXT: Location Information
+### EXT: Position Information
 
 The parser returns position information for parsed JSON objects, i.e.
-the location for JSON properties and values within the input-string that is parsed.
+the position for JSON properties and values within the input-string that is parsed.
 
 
 _Location information_ - i.e. the position, where a data-property is located
@@ -81,8 +84,8 @@ Enable extraction of position information:
 
 var jsonlint = require("jsonlint");
 
-//enable meta-data extraction (i.e. the location information):
-jsonlint.parser.setLocEnabled(true);
+//enable meta-data extraction (i.e. the position information):
+jsonlint.parser.setPosEnabled(true);
 
 var data = jsonlint.parse('{"creative?": false}');
 
@@ -101,13 +104,13 @@ the result for example above would be:
 // extracted meta data:
 {
   "creative?": false,
-  "_loc": {
-    ///// location for whole object itself
+  "_pos": {
+    ///// position for whole object itself
     "first_line": 1,
     "last_line": 1,
     "first_column": 1,
     "last_column": 19,
-    ///// location for property "creative?" in parent object
+    ///// position for property "creative?" in parent object
     "_creative?": [
       {//// position of property/name
         "first_line": 1,
@@ -122,7 +125,7 @@ the result for example above would be:
         "last_column": 19
       }
     ],
-    "_this": {///// location for object itself
+    "_this": {///// position for object itself
       "first_line": 1,
       "last_line": 1,
       "first_column": 1,
@@ -132,7 +135,7 @@ the result for example above would be:
 }
 ```
 
-##### The `loc` Object
+##### The `pos` Object
 
 Each position/location information object consists of the following properties:
 ```javascript
@@ -144,21 +147,21 @@ Each position/location information object consists of the following properties:
 }
 ```
 
-##### `loc` for Properties
+##### `pos` for Properties
 
-Generally, the position information is stored in property `"_loc"`.
+Generally, the position information is stored in property `"_pos"`.
 
-Positions for **properties** are noted in the object's `"_loc"`-property
+Positions for **properties** are noted in the object's `"_pos"`-property
 within sub-property: `"_" + <property-name>`.
 
-For a property, the location information is an array with 2 location-entries:
+For a property, the position information is an array with 2 position-entries:
 the first entry _locates_ the property-name and the second one the property-value
 
 Note: if the value does not have a primitive type, then the value-entry will actually be not
- a `loc` information object, but contain itself the value's location information via sub-properties;
- in this case, the `loc` for the value-object itself will be contained in the special sub-property `"_this"`.
-See the additional information below: `loc` for [Arrays and Objects](loc-for-arrays-and-objects) and
-`loc` for [Arrays Entries](loc-for-array-entries).
+ a `pos` information object, but contain itself the value's position information via sub-properties;
+ in this case, the `pos` for the value-object itself will be contained in the special sub-property `"_this"`.
+See the additional information below: `pos` for [Arrays and Objects](pos-for-arrays-and-objects) and
+`pos` for [Arrays Entries](pos-for-array-entries).
 
 
 For example, the result for `{"someProperty":...}` would look something like:
@@ -166,50 +169,50 @@ For example, the result for `{"someProperty":...}` would look something like:
 {
   "someProperty":
   ...
-  "_loc": {
+  "_pos": {
     "_someProperty": [
-      {"first_line":...},  //location of the property-name for someProperty
-      {"first_line":...}   //location of a primitive property-value for someProperty
+      {"first_line":...},  //position of the property-name for someProperty
+      {"first_line":...}   //position of a primitive property-value for someProperty
     ]
     ...
 ```
 
-##### loc for Arrays and Objects
+##### pos for Arrays and Objects
 
-The object's / array's own position is noted in `"_loc"` in sub-property `"_this"`
+The object's / array's own position is noted in `"_pos"` in sub-property `"_this"`
 e.g.:
 ```javascript
 {
-  "_loc": {
+  "_pos": {
     "_this": { "first_line": ...
 ````
 
-##### `loc` for `Array` Entries
+##### `pos` for `Array` Entries
 
-Positions for array entries are noted in the array's `"_loc"` in sub-property: `"_" + <entry-index>`
+Positions for array entries are noted in the array's `"_pos"` in sub-property: `"_" + <entry-index>`
 e.g.:
 ```javascript
 {
-  "_loc": {
+  "_pos": {
     "_0": { "first_line": ...
     "_1": { "first_line": ...
             ...
 ```
 
-##### Set custom field name for the `loc` Object
+##### Set custom field name for the `pos` Object
 
-The field name for the `loc` object can be set to something different than
-`_loc`, e.g. `__mycustom_name`:
+The field name for the `pos` object can be set to something different than
+`_pos`, e.g. `__mycustom_name`:
 ```javascript
-jsonlint.parser.setLocEnabled('__mycustom_name');
+jsonlint.parser.setPosEnabled('__mycustom_name');
 ```
 
-The currently set field name for `loc` can be retrieved using:
+The currently set field name for `pos` can be retrieved using:
 ```javascript
-var locFieldName = jsonlint.parser.getLoc();
+var locFieldName = jsonlint.parser.getPos();
 ```
 
-NOTE for `FALSY` values, the location information will be disabled in parsing results
+NOTE for `FALSY` values, the position information will be disabled in parsing results
 
 
 --------------
@@ -221,7 +224,7 @@ Enable `strict` parsing mode:
 
 var jsonlint = require("jsonlint");
 
-//enable meta-data extraction (i.e. the location information):
+//enable meta-data extraction (i.e. the position information):
 jsonlint.parser.setStrict(true);
 
 //OK
@@ -232,30 +235,32 @@ jsonlint.parse('{"duplicate": false, "duplicate": true}');
 
 ```
 
-If `setLocEnabled` is set to `true`, the error will contain additional location
-information (see also [loc properties](#the-loc-properties) above):
- * `_loc`: position of the offending property
- * `_locTo`: position of the first declaration of the property
+If `setPosEnabled` is set to `true`, the error will contain additional position
+information (see also [pos properties](#the-pos-properties) above):
+ * `_pos`: position of the offending property
+ * `_posTo`: position of the first declaration of the property
 
-Example for error with additional location information:
+Example for error with additional position information:
 ```javascript
 ...
-jsonlint.parser.setLocEnabled(true);
+jsonlint.parser.setPosEnabled(true);
 try{
   jsonlint.parse('{\n  "duplicate": false,\n  "duplicate": true\n}');
 } catch (e){
-  console.log('duplicate property at line '+e._loc.first_line);
-  console.log('property was already defined at line '+e._locTo.first_line);
+  console.log('duplicate property at line '+e._pos.first_line);
+  console.log('property was already defined at line '+e._posTo.first_line);
 }
 ```
 
 ## MIT License
 
 
-Modification by russa
+Modification by russa  
+Copyright (C) 2014-2020 DFKI GmbH, Deutsches Forschungszentrum fuer Kuenstliche Intelligenz (German Research Center for Artificial Intelligence), https://www.dfki.de
 
 
-based on JSON Lint by
+
+based on [JSON Lint](https://github.com/zaach/jsonlint) by
 
 Copyright (C) 2012 Zachary Carter
 

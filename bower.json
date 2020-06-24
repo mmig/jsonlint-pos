@@ -1,7 +1,7 @@
 {
-  "name": "jsonlint-ext",
+  "name": "jsonlint-pos",
   "version": "1.6.2",
-  "main": "lib/jsonlint-ext.js",
+  "main": "lib/jsonlint-pos.js",
   "ignore": [
     "**/.*",
     "example",

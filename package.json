@@ -1,6 +1,6 @@
 {
   "author": "russa",
-  "name": "jsonlint-ext",
+  "name": "jsonlint-pos",
   "description": "Validate JSON",
   "keywords": [
     "json",
@@ -12,16 +12,16 @@
   "preferGlobal": true,
   "repository": {
     "type": "git",
-    "url": "git://github.com/russaa/jsonlint-ext.git"
+    "url": "git://github.com/mmig/jsonlint-pos.git"
   },
   "bugs": {
-    "url": "https://github.com/russaa/jsonlint-ext/issues"
+    "url": "https://github.com/mmig/jsonlint-pos/issues"
   },
-  "main": "lib/jsonlint-ext.js",
+  "main": "lib/jsonlint-pos.js",
   "bin": {
     "jsonlint": "lib/cli.js"
   },
-  "browser": "web/jsonlint-ext.js",
+  "browser": "web/jsonlint-pos.js",
   "engines": {
     "node": ">= 0.6"
   },
@@ -39,7 +39,7 @@
   "scripts": {
     "build": "node scripts/build.js",
     "build:jison": "node scripts/build-jison.js src/jsonlint.y src/jsonlint.l",
-    "build:lib": "node scripts/bundle.js jsonlint.js lib/jsonlint-ext.js web/jsonlint-ext.js",
+    "build:lib": "node scripts/bundle.js jsonlint.js lib/jsonlint-pos.js web/jsonlint-pos.js",
     "build:rm": "node -e require('fs').unlinkSync('jsonlint.js')",
     "test": "node test/all-tests.js"
   },

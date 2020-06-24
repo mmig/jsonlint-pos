@@ -171,9 +171,9 @@ define(['appUtil', 'jsonlint', 'esprima', 'grammarValidator', 'parseOptions'],
         };
         return function applyFoldingImpl(grammarPathsList, locField){
             try{
-                jsonparser.setLocEnabled(locField);
+                jsonparser.setPosEnabled(locField);
                 var json = jsonparser.parse(editor.val());
-                jsonparser.setLocEnabled(false);
+                jsonparser.setPosEnabled(false);
                 for(var i=0, size=grammarPathsList.length; i < size; ++i){
                     addFoldingFor(editor, json, grammarPathsList[i], locField);
                     addStructureMarkerFor(editor, json, grammarPathsList[i], locField);
@@ -227,20 +227,20 @@ define(['appUtil', 'jsonlint', 'esprima', 'grammarValidator', 'parseOptions'],
             //get details for the error using the json-lint parser:
             try {
                 jsonparser.setStrict(options.isStrict());//true);
-                jsonparser.setLocEnabled(locField? locField+'$' : true);//<- always compile with loc-info (for marking / folding)
+                jsonparser.setPosEnabled(locField? locField+'$' : true);//<- always compile with loc-info (for marking / folding)
 
                 jsonparser.parse(grammarText);
 
                 jsonparser.setStrict(false);
-                jsonparser.setLocEnabled(false);
+                jsonparser.setPosEnabled(false);
             } catch (err) {
 
                 var msg = err.toString();
 
                 var start, end, loc;
-                if (err._loc) {
+                if (err._pos) {
 
-                    loc = getOffsetFor(editor, err._loc);
+                    loc = getOffsetFor(editor, err._pos);
                     start = loc.start;
                     end = loc.end;
 
@@ -266,8 +266,8 @@ define(['appUtil', 'jsonlint', 'esprima', 'grammarValidator', 'parseOptions'],
 
                 //if there is information about the other / related element that caused the error:
                 //  set a warning-marker for that element
-                if (err._locTo) {
-                    loc = getOffsetFor(editor, err._locTo);
+                if (err._posTo) {
+                    loc = getOffsetFor(editor, err._posTo);
                     editor.addMarker(ERROR_MARKER, loc.start, loc.end, msg);
                 }
             }

@@ -4,7 +4,7 @@
 // MODIFICATION russa: added position meta-data to parsed objects
 var _p = parser;
 var _isLoc = false;
-_p.getLoc = function(){
+_p.getPos = function(){
   return _isLoc;
 };
 /**
@@ -17,7 +17,7 @@ _p.getLoc = function(){
  *                            will be taken from the location sub-field of <code>loc</code>
  */
 _p._loc = function(t, loc, sub, subLoc){
-    var l = _p.getLoc();
+    var l = _p.getPos();
     if(l) {
         var locVal = subLoc? loc[l] : loc;
         _p._checkLoc(t, l, sub, locVal);
@@ -40,7 +40,8 @@ _p._checkLoc = function(t, l, sub, locVal){
                             ': Cannot add location information to "'+l+'", because' +
                             ' the property already exists.';
             var err = new Error(errStr);
-            err._loc = pos;
+            err._pos = pos;
+            err._posTo = {};
             throw err;
         }
     }
@@ -48,14 +49,14 @@ _p._checkLoc = function(t, l, sub, locVal){
 /**
  * @param {boolean|string} isEnabled
  *        enable / disable extraction of position-information:
- *        if <code>true</code> the default name "_loc" will be used, if a string
+ *        if <code>true</code> the default name "_pos" will be used, if a string
  *        with length > 1 is given, location information will be stored to that
  *        sub-field.
  *        Will be disabled for FALSY values.
  * DEFAULT: disabled
  */
-_p.setLocEnabled = function(isEnabled){
-    _isLoc = isEnabled === true? '_loc' : isEnabled;
+_p.setPosEnabled = function(isEnabled){
+    _isLoc = isEnabled === true? '_pos' : isEnabled;
 };
 
 // MODIFICATION russa: add "strict" parsing mode (e.g. reject duplicate key entries)
@@ -155,7 +156,7 @@ JSONMember
 JSONMemberList
     : JSONMember
         {{$$ = {}; $$[$1[0]] = $1[1];
-            if(_p.getLoc()){
+            if(_p.getPos()){
                 _p._loc($$, @1);//MOD:locInfo member
                 _p._loc($$, $1, '_' + $1[0], true);//MOD:locInfo member
             }
@@ -166,7 +167,7 @@ JSONMemberList
 
             if(_p.isStrict()){//MOD: "strict" mode: reject duplicate key entries
                 if(typeof $1[$3[0]] !== 'undefined'){
-                    var loc = _p.getLoc();
+                    var loc = _p.getPos();
                     var pos = $3[loc]? $3[loc][0] : @3;
 
                     var locDupl = $3[0] === loc;
@@ -176,10 +177,10 @@ JSONMemberList
 
                     var err = new Error(errStr);
                     if($3[loc]){
-                        err._loc = pos;
+                        err._pos = pos;
                     }
                     if($1[loc]){
-                        err._locTo = !locDupl? $1[loc]['_'+$3[0]][0] : $1[loc];
+                        err._posTo = !locDupl? $1[loc]['_'+$3[0]][0] : $1[loc];
                     }
                     throw err;
                 }

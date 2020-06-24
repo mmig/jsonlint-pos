@@ -1,6 +1,6 @@
 var fs = require("fs"),
     assert = require("assert"),
-    parser = require("../lib/jsonlint-ext").parser,
+    parser = require("../lib/jsonlint-pos").parser,
     utils = require('./utils');
 
 exports["test object"] = function () {
@@ -242,18 +242,18 @@ exports["test duplicate keys (strictly)"] = function () {
 exports["test duplicate keys due to collision with position field (strictly)"] = function () {
     var json = fs.readFileSync(__dirname + "/fails/36.json").toString();
     parser.setStrict(true);
-    parser.setLocEnabled(true);
+    parser.setPosEnabled(true);
     assert["throws"](function () {parser.parse(json)}, "should throw error");
-    parser.setLocEnabled(false);
+    parser.setPosEnabled(false);
     parser.setStrict(false);
 }
 
 exports["test duplicate keys due to collision with custom position field (strictly)"] = function () {
     var json = fs.readFileSync(__dirname + "/fails/37.json").toString();
     parser.setStrict(true);
-    parser.setLocEnabled('$__MY_LOC$');
+    parser.setPosEnabled('$__MY_LOC$');
     assert["throws"](function () {parser.parse(json)}, "should throw error");
-    parser.setLocEnabled(false);
+    parser.setPosEnabled(false);
     parser.setStrict(false);
 }
 
@@ -289,28 +289,28 @@ exports["test pass-4"] = function () {
 
 exports["test position information is correct"] = function () {
     var json = fs.readFileSync(__dirname + "/passes/1.json").toString();
-    parser.setLocEnabled(true);
+    parser.setPosEnabled(true);
     var parsedJson;
     assert.doesNotThrow(function () {parsedJson = parser.parse(json)}, "should pass");
 
-    var pos1 = utils.extractPositions(parsedJson, parser.getLoc());
-    var pos2 = require('./1-locs');
+    var pos1 = utils.extractPositions(parsedJson, parser.getPos());
+    var pos2 = require('./1-positions');
     assert.doesNotThrow(function () {utils.comparePositions(pos1, pos2)}, "should pass");
 
-    parser.setLocEnabled(false);
+    parser.setPosEnabled(false);
 }
 
 exports["test position information with custom position field is correct"] = function () {
     var json = fs.readFileSync(__dirname + "/passes/1.json").toString();
-    parser.setLocEnabled('__MY_CUSTOM__FIELD__');
+    parser.setPosEnabled('__MY_CUSTOM__FIELD__');
     var parsedJson;
     assert.doesNotThrow(function () {parsedJson = parser.parse(json)}, "should pass");
 
-    var pos1 = utils.extractPositions(parsedJson, parser.getLoc());
-    var pos2 = require('./1-locs');
+    var pos1 = utils.extractPositions(parsedJson, parser.getPos());
+    var pos2 = require('./1-positions');
     assert.doesNotThrow(function () {utils.comparePositions(pos1, pos2)}, "should pass");
 
-    parser.setLocEnabled(false);
+    parser.setPosEnabled(false);
 }
 
 if (require.main === module)

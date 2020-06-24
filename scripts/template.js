@@ -4,7 +4,7 @@ var moduleName = 'jsonlint';
 //additional comments for documenting extension features
 var preamble = '/**\n\
  * Modified JSON Lint parser\n\
- * https://github.com/russaa/jsonlint-ext\n\
+ * https://github.com/mmig/jsonlint-pos\n\
  * MIT License\n\
  * \n\
  * The parser has a "strict" mode which will throw an Error in case duplicate properties are encountered, e.g.\n\
@@ -16,23 +16,23 @@ var preamble = '/**\n\
  * \n\
  * \n\
  * Parser returns position information for parsed JSON objects, i.e.\n\
- * the location within the input-string that is parsed.\n\
+ * the position/location within the input-string that is parsed.\n\
  * \n\
- * Position information is stored in property "_loc".\n\
- * Positions for properties are noted in the object\'s "_loc" in sub-property: "_"+ property-name\n\
+ * Position information is stored in property "_pos".\n\
+ * Positions for properties are noted in the object\'s "_pos" in sub-property: "_"+ property-name\n\
  *  e.g.: {\n\
- *          "_loc": {\n\
+ *          "_pos": {\n\
  *             "_someProperty": {\n\
  *             ...\n\
  *              \n\
- * Positions for array entries are noted in the array\'s "_loc" in sub-property: "_"+ entry-index\n\
+ * Positions for array entries are noted in the array\'s "_pos" in sub-property: "_"+ entry-index\n\
  *  e.g.: {\n\
- *          "_loc": {\n\
+ *          "_pos": {\n\
  *             "_0": {\n\
  *             ...\n\
- * The object\'s / array\'s own position is noted in "_loc" in sub-property: "_this"\n\
+ * The object\'s / array\'s own position is noted in "_pos" in sub-property: "_this"\n\
  *  e.g.: {\n\
- *          "_loc": {\n\
+ *          "_pos": {\n\
  *             "_this": { ...\n\
  * \n\
  * Each position information object has properties:\n\

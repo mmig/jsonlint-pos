@@ -3,35 +3,35 @@
 <head>
     <meta charset="utf-8" />
     <title>SIMPLE JSON Lint EXT Demo</title>
-    <script src="../web/jsonlint-ext.js"></script>
+    <script src="../web/jsonlint-pos.js"></script>
     <script>
       window.onload = function () {
-        jsonlint.parser.setLocEnabled(true);//enable extraction of location meta data
+        jsonlint.parser.setPosEnabled(true);//enable extraction of position meta data
         document.getElementById("button").onclick = function () {
           try {
 
             if (document.getElementById("extract-loc").checked) {
-                jsonlint.parser.setLocEnabled(true);//enable extraction of location meta data
+                jsonlint.parser.setPosEnabled(true);//enable extraction of position meta data
             }
             else {
-                jsonlint.parser.setLocEnabled(false);//enable extraction of location meta data
+                jsonlint.parser.setPosEnabled(false);//enable extraction of position meta data
             }
 
             if (document.getElementById("strict-mode").checked) {
-                jsonlint.parser.setStrict(true);//enable extraction of location meta data
+                jsonlint.parser.setStrict(true);//enable extraction of position meta data
             }
             else {
-                jsonlint.parser.setStrict(false);//enable extraction of location meta data
+                jsonlint.parser.setStrict(false);//enable extraction of position meta data
             }
             var result = jsonlint.parse(document.getElementById("source").value);
             if (result) {
               document.getElementById("result").innerHTML = "JSON is valid!";
               document.getElementById("result").className = "pass";
               if (document.getElementById("reformat").checked) {
-                var func = !jsonlint.parser.getLoc()? null : function(n,v){
+                var func = !jsonlint.parser.getPos()? null : function(n,v){
                   if(Array.isArray(v)){
                     var obj =  {_type: 'Array'};
-                    obj[jsonlint.parser.getLoc()] = v[jsonlint.parser.getLoc()];
+                    obj[jsonlint.parser.getPos()] = v[jsonlint.parser.getPos()];
                     for(var i=0,s=v.length;i<s;++i) obj[i]=v[i];
                     return obj;
                   }
@@ -72,14 +72,14 @@
         <li>options (below) that are specific to the extended version are shown <em>in italics</em></li>
         <li>extended <u>strict</u> mode:<br/>
             throws error in case of duplicate properties.</li>
-        <li>extended <u>location information</u> mode:<br>
+        <li>extended <u>position information</u> mode:<br>
             returns additional meta-information about the position of properties/values within the JSON string.
             <ul>
                 <li>using this option in combination with <u>reformat JSON</u> will display the
-                    <em>location information</em> in the input box.
+                    <em>position information</em> in the input box.
                 </li>
                 <li><u>NOTE</u> that <u>reformatting</u> will also convert arrays to Objects
-                    in order to make the location information visible in the returned JSON object.
+                    in order to make the position information visible in the returned JSON object.
                 </li>
             </ul>
         </li>
@@ -105,13 +105,13 @@
 
     <em>
         <input type="checkbox" value="yes" id="extract-loc" />
-        <label for="extract-loc" title="attaches position data to parsed objects">extract <u>location information</u> as meta data</label>
+        <label for="extract-loc" title="attaches position data to parsed objects">extract <u>position information</u> as meta data</label>
     </em>
 
   </p>
   <h2>Results</h2>
   <pre id="result"></pre>
-  <p><a href="https://github.com/russaa/jsonlint-ext">project on github</a>
+  <p><a href="https://github.com/mmig/jsonlint-pos">project on github</a>
     <i><small>(based on <a href="https://github.com/zaach/jsonlint">jsonlint@github</a>)</small></i></p>
 </body>
 </html>

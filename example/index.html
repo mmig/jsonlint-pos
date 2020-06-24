@@ -18,7 +18,7 @@
   <h1>JSON Lint EXT</h1>
   <div>
     <p>
-        Example for the <em>Extended JSON parser</em>: the editor uses the <em>location information</em>
+        Example for the <em>Extended JSON parser</em>: the editor uses the <em>position information</em>
         for marking JSON errors within the editor-view.
         <br/>
         Enabling <em>strict mode</em> will give an error, if the JSON contains duplicate properties.
@@ -40,7 +40,7 @@
 
     <em>
         <input type="checkbox" value="yes" id="extract-loc" />
-        <label for="extract-loc" title="attaches position data to parsed objects"> extract <u>location information</u> as meta data</label>
+        <label for="extract-loc" title="attaches position data to parsed objects"> extract <u>position information</u> as meta data</label>
     </em>
 
 
@@ -48,20 +48,20 @@
     <fieldset id="advanved-options-container">
         <em>
             <input type="checkbox" value="yes" id="advanced-options" />
-            <label for="advanced-options"> show advanved options for <u>location information</u></label>
+            <label for="advanced-options"> show advanved options for <u>position information</u></label>
         </em>
 
         <ul id="advanved-options-set">
             <li><em>
                 <input type="checkbox" value="yes" id="convert-array" checked="checked" />
                 <label for="convert-array" title="if positions are enabled do convert arrays to make position information visible">
-                    convert arrays if <u>location information</u> and <u>reformatting</u> is enabled
+                    convert arrays if <u>position information</u> and <u>reformatting</u> is enabled
                 </label>
             </em></li>
 
             <li><em>
                 <label for="loc-field" placeholder="default" title="name of the field into which position information will be stored">
-                    field name for <u>location information</u>:
+                    field name for <u>position information</u>:
                 </label>
                 <input type="text" id="loc-field" />
             </em></li>
@@ -89,7 +89,7 @@
 </pre>
 
 <hr/>
-<p id="info"><a href="https://github.com/russaa/jsonlint-ext">project on github</a>
+<p id="info"><a href="https://github.com/mmig/jsonlint-pos">project on github</a>
   <em><small>(based on <a href="https://github.com/zaach/jsonlint">jsonlint@github</a>)</small></em>
 </p>
 

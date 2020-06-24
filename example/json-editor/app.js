@@ -48,10 +48,10 @@ function(require, $, validationUtil, jsonlint, waitDialog
 
                 var isLoc = options.isLoc();
                 if (isLoc) {
-                    jsonlint.parser.setLocEnabled(options.getLocField() || true);//enable extraction of location meta data
+                    jsonlint.parser.setPosEnabled(options.getLocField() || true);//enable extraction of location meta data
                 }
                 else {
-                    jsonlint.parser.setLocEnabled(false);//enable extraction of location meta data
+                    jsonlint.parser.setPosEnabled(false);//enable extraction of location meta data
                 }
 
                 if (options.isStrict()) {
@@ -93,7 +93,7 @@ function(require, $, validationUtil, jsonlint, waitDialog
         var locInputField = $('#loc-field');
         locInputField.prop('disabled', !isLoc);
 
-        var parserLocField = jsonlint.parser.getLoc();
+        var parserLocField = jsonlint.parser.getPos();
         var optionsLocField = options.getLocField();
         if(parserLocField && !optionsLocField){
             locInputField.val(parserLocField);
@@ -113,7 +113,7 @@ function(require, $, validationUtil, jsonlint, waitDialog
     function convertArrayValues(n,v){
         if(Array.isArray(v)){
             var obj = {_type: 'Array'};
-            var loc = jsonlint.parser.getLoc();
+            var loc = jsonlint.parser.getPos();
             obj[loc] = v[loc];
             for(var i=0,s=v.length;i<s;++i) obj[i]=v[i];
             return obj;
