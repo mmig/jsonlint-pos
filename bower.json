@@ -1,16 +1,16 @@
 {
   "name": "jsonlint-ext",
-  "version": "1.6.0",
+  "version": "1.6.2",
   "main": "lib/jsonlint-ext.js",
   "ignore": [
     "**/.*",
+    "example",
     "node_modules",
     "scripts",
     "src",
     "test",
     "web",
     "package.json",
-    "Makefile",
     "README.md"
   ]
 }
