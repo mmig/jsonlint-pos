@@ -17,15 +17,33 @@ exports["test escaped chars"] = function () {
     assert.deepEqual(parser.parse(json), {"foo": '\\\"'});
 };
 
+exports["test all escaped characters"] = function () {
+    var json = '["\\u20AC","\\/","\\\\","\\b","\\f","\\n","\\r","\\t","\\\""]';
+    assert.deepEqual(parser.parse(json), ['\u20AC','\/','\\','\b','\f','\n','\r','\t','\"']);
+};
+
 exports["test escaped \\n"] = function () {
     var json = '{"foo": "\\\\\\n"}';
     assert.deepEqual(parser.parse(json), {"foo": '\\\n'});
+};
+
+exports["test escaped backslash does not get used to escape"] = function () {
+    var json = '{"foo": "\\\\n"}';
+    assert.deepEqual(parser.parse(json), {"foo": '\\n'});
 };
 
 exports["test string with escaped line break"] = function () {
     var json = '{"foo": "bar\\nbar"}';
     assert.deepEqual(parser.parse(json), {"foo": "bar\nbar"});
     assert.equal(JSON.stringify(parser.parse(json)).length, 18);
+};
+
+exports["test escaped value and key chars"] = function () {
+    var json = fs.readFileSync(__dirname + "/passes/4.json").toString();
+    assert.deepEqual(parser.parse(json), {
+      hex: '\u0123\u4567\u89AB\uCDEF\uabcd\uef4A',
+      "\/\\\"\uCAFE\uBABE\uAB98\uFCDE\ubcda\uef4A\b\f\n\r\t`1~!@#$%^&*()_+-=[]{}|;:',./<>?": 'special char key'
+    });
 };
 
 exports["test string with line break"] = function () {

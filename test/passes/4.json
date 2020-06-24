@@ -1,0 +1,4 @@
+{
+  "hex": "\u0123\u4567\u89AB\uCDEF\uabcd\uef4A",
+  "\/\\\"\uCAFE\uBABE\uAB98\uFCDE\ubcda\uef4A\b\f\n\r\t`1~!@#$%^&*()_+-=[]{}|;:',./<>?": "special char key"
+}
