@@ -36,6 +36,11 @@
     "uglify-js": "^3.10.0"
   },
   "scripts": {
+    "build": "npm run build:jison && npm run build:mv && npm run build:web && npm run build:webmin",
+    "build:jison": "jison src/jsonlint.y src/jsonlint.l",
+    "build:mv": "node -e require('fs').renameSync('jsonlint.js','lib/jsonlint-ext.js')",
+    "build:web": "node scripts/bundle.js > web/jsonlint-ext.js",
+    "build:webmin": "node scripts/bundle.js | uglifyjs > web/jsonlint-ext.min.js",
     "test": "node test/all-tests.js"
   },
   "optionalDependencies": {}
