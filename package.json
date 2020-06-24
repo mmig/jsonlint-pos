@@ -21,6 +21,7 @@
   "bin": {
     "jsonlint": "lib/cli.js"
   },
+  "browser": "web/jsonlint-ext.js",
   "engines": {
     "node": ">= 0.6"
   },
