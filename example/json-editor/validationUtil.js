@@ -237,9 +237,9 @@ define(['appUtil', 'jsonlint', 'parseOptions'],
                 var msg = err.toString();
 
                 var start, end, loc;
-                if (err._pos) {
+                if (err.hash.pos) {
 
-                    loc = getOffsetFor(editor, err._pos);
+                    loc = getOffsetFor(editor, err.hash.pos);
                     start = loc.start;
                     end = loc.end;
 
@@ -265,8 +265,8 @@ define(['appUtil', 'jsonlint', 'parseOptions'],
 
                 //if there is information about the other / related element that caused the error:
                 //  set a warning-marker for that element
-                if (err._posTo) {
-                    loc = getOffsetFor(editor, err._posTo);
+                if (err.hash.posOther) {
+                    loc = getOffsetFor(editor, err.hash.posOther);
                     editor.addMarker(ERROR_MARKER, loc.start, loc.end, msg);
                 }
             }

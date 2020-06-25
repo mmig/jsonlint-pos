@@ -322,8 +322,9 @@ jsonlint.parse('{"duplicate": false, "duplicate": true}');
 
 If `setPosEnabled` is set to `true`, the error will contain additional position
 information (see also [pos properties](#the-pos-object) above):
- * `_pos`: position of the offending property
- * `_posTo`: position of the first declaration of the property
+ * `Error.hash.pos`: position of the offending property
+ * `Error.hash.posOther`: position of the first declaration of the property
+   _NOTE_ in same cases `posOther` may not contain positional information
 
 Example for error with additional position information:
 ```javascript
@@ -332,8 +333,8 @@ jsonlint.parser.setPosEnabled(true);
 try{
   jsonlint.parse('{\n  "duplicate": false,\n  "duplicate": true\n}');
 } catch (e){
-  console.log('duplicate property at line '+e._pos.first_line);
-  console.log('property was already defined at line '+e._posTo.first_line);
+  console.log('duplicate property at line '+e.hash.pos.first_line);
+  console.log('property was already defined at line '+e.hash.posOther.first_line);
 }
 ```
 
