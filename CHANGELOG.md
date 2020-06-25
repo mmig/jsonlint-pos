@@ -9,12 +9,40 @@ https://www.npmjs.com/package/jsonlint-pos
 
 
 -------------
+Version 2.1.0
+-------------
+
+**Changes**
+
+ * removed superfluous dependencies from UMD header
+ * FIX attach strict-mode setting and position-extraction-mode setting to parser instance instead of globally
+ * FIX emit `strict` mode errors via `Parser.parseError(message, hash)`:  
+   * throwing can be disabled by attaching a custom error handler function to `Parser.parseError`
+   * the `hash` contains the position information (in case position information is enabled):
+     ```
+     Error.hash = {
+         pos: Position,
+         posOther: Position
+     }
+     ```
+     this change is breaking (see comments below)
+ * added basic TypeScript typings
+
+
+**Breaking Changes**
+
+ * renamed position fields on Error in strict mode for consistency with other parser errors
+   * `Error._pos` &rarr; `Error.hash.pos`
+   * `Error._posTo` &rarr; `Error.hash.posOther`
+
+-------------
 Version 2.0.0
 -------------
 
 **Changes**
 
  * removed file `bower.json`
+ * clean up json-editor example & use npm dependencies for including/building its libraries
 
 **Breaking Changes**
 
