@@ -242,7 +242,7 @@ jsonlint.parse('{"duplicate": false, "duplicate": true}');
 ```
 
 If `setPosEnabled` is set to `true`, the error will contain additional position
-information (see also [pos properties](#the-pos-properties) above):
+information (see also [pos properties](#the-pos-object) above):
  * `_pos`: position of the offending property
  * `_posTo`: position of the first declaration of the property
 
