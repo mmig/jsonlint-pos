@@ -3,6 +3,7 @@ JSON Lint Position
 [![MIT license](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 [![GitHub package.json version](https://img.shields.io/github/package-json/v/mmig/jsonlint-pos/master)](https://github.com/mmig/jsonlint-pos)
 [![npm](https://img.shields.io/npm/v/jsonlint-pos)](https://www.npmjs.com/package/jsonlint-pos)
+![Node.js CI](https://github.com/mmig/jsonlint-pos/workflows/Node.js%20CI/badge.svg)
 
 A modified version of the JavaScript [JSON parser][1] by Z. Carter.
 
