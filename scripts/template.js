@@ -57,13 +57,13 @@ exports.parse = function () { return jsonlint.parse.apply(jsonlint, arguments); 
 
 var umdHeader = ";(function (root, factory) {\n\
   if (typeof define === 'function' && define.amd) {\n\
-    define(['require','module','exports'], function(require,module,exports){return factory(require,module,exports);});\n\
+    define(['exports'], function(exports){return factory(exports);});\n\
   } else if (typeof module === 'object' && module.exports) {\n\
-    module.exports = factory(require,module,exports);\n\
+    module.exports = factory(module.exports);\n\
   } else {\n\
-    root.jsonlint = factory(true,false,{});\n\
+    root.jsonlint = factory({});\n\
   }\n\
-}(typeof window !== 'undefined' ? window : typeof self !== 'undefined' ? self : typeof global !== 'undefined' ? global : this, function (require, module, exports) {\n";
+}(typeof window !== 'undefined' ? window : typeof self !== 'undefined' ? self : typeof global !== 'undefined' ? global : this, function (exports) {\n";
 var umdFooter = "\nreturn exports;\n}));";
 
 module.exports = {
