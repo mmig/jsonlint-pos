@@ -139,7 +139,7 @@ var json = jsonlint.parser.parse(...
 
 ### Import Module (e.g. TypeScript)
 
-```
+```typescript
 import * as jsonlint from 'jsonlint-pos';
 
 // use jsonlint, e.g.
