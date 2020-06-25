@@ -12,7 +12,7 @@
     "location",
     "strict"
   ],
-  "version": "2.1.0",
+  "version": "2.1.0-beta.1",
   "repository": {
     "type": "git",
     "url": "git://github.com/mmig/jsonlint-pos.git"
