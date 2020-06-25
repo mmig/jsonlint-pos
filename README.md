@@ -9,6 +9,16 @@ A modified version of the JavaScript [JSON parser][1] by Z. Carter.
 This JSON parser allows to extract the _position_ information and offers a _strict_
 mode (disallowing duplicate property names). For more details, see below.
 
+EXTENSION
+----
+
+Modified JSON parser with:
+ * [additional position information](#feature-position-information) (i.e. position of objects within parsed string)
+ * [`strict` parsing mode](#feature-strict-parsing-mode) which
+   * will throw an error if JSON object has duplicate keys
+   * _TODO: add features for strict parsing mode(?)_
+
+
 ## Demo
 Try the **[JSON Editor Demo][2]** that uses the modified JSON parser:\
 the demo page uses the _position information_ for marking JSON errors in an editor.
@@ -18,16 +28,30 @@ In addition, you can try out the extended options of the JSON verifier, e.g. wit
 Or the small, very _[Simple Demo][3]_ which also allows to try out the _strict_
 and extracting then position information.
 
-EXTENSION
-----
-
-Modified JSON parser with:
- * [additional position information](#ext-position-information) (i.e. position of objects within parsed string)
- * [`strict` parsing mode](#ext-strict-parsing-mode) which
-   * will throw an error if JSON object has duplicate keys
-   * _TODO: add features for strict parsing mode(?)_
-
+TOC
 -----
+<!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:0 orderedList:0 -->
+
+- [Demo](#demo)
+- [Command line interface](#command-line-interface)
+	- [Options](#options)
+- [Usage](#usage)
+	- [Include in Webpage](#include-in-webpage)
+	- [As Pure JS](#as-pure-js)
+	- [As AMD Module](#as-amd-module)
+	- [As CommonJS Module](#as-commonjs-module)
+	- [Import Module (e.g. TypeScript)](#import-module-eg-typescript)
+	- [FEATURE: Position Information](#feature-position-information)
+		- [The `pos` Object](#the-pos-object)
+		- [`pos` for Properties](#pos-for-properties)
+		- [pos for Arrays and Objects](#pos-for-arrays-and-objects)
+		- [`pos` for `Array` Entries](#pos-for-array-entries)
+		- [Set custom field name for the `pos` Object](#set-custom-field-name-for-the-pos-object)
+	- [FEATURE: Strict parsing mode](#feature-strict-parsing-mode)
+- [MIT License](#mit-license)
+
+<!-- /TOC -->
+
 
 ## Command line interface
 Install jsonlint with npm to use the command line interface:
@@ -67,19 +91,74 @@ jsonlint will either report a syntax error with details or pretty print the sour
 
 ------
 
-### EXT: Position Information
+## Usage
+
+### Include in Webpage
+
+include `web/jsonlint-pos.js` or `web/jsonlint-pos.min.js` (the later optionally with `*.min.js.map` file)
+in your web page:
+```html
+<!-- EITHER uncompressed library (with comments etc): -->
+<script src="<path to your file>/jsonlint-pos.js"></script>
+<!-- OR compressed library (OPTIONALLY include *.min.js.map for source mapping): -->
+<script src="<path to your file>/jsonlint-pos.min.js"></script>
+```
+
+
+### As Pure JS
+
+When no modlue loader is present (i.e. no `require(..)` function is available),
+then the module is exported as global variable `jsonlint`:
+
+```javascript
+// use jsonlint, e.g.
+jsonlint.parser.setStrict(true);
+var json = jsonlint.parser.parse(...
+```
+
+### As AMD Module
+
+```javascript
+require('jsonlint-pos', function(jsonlint){
+    // use jsonlint, e.g.
+    jsonlint.parser.setStrict(true);
+    var json = jsonlint.parser.parse(...
+})
+```
+
+### As CommonJS Module
+
+```javascript
+var jsonlint = require('jsonlint-pos');
+
+// use jsonlint, e.g.
+jsonlint.parser.setStrict(true);
+var json = jsonlint.parser.parse(...
+```
+
+### Import Module (e.g. TypeScript)
+
+```
+import * as jsonlint from 'jsonlint-pos';
+
+// use jsonlint, e.g.
+jsonlint.parser.setStrict(true);
+var json = jsonlint.parser.parse(...
+```
+
+### FEATURE: Position Information
 
 The parser returns position information for parsed JSON objects, i.e.
 the position for JSON properties and values within the input-string that is parsed.
 
 
-_Location information_ - i.e. the position, where a data-property is located
+_Location information_ - i.e. the position or offset, where a data-property is located
 within the String - may be useful, if you code a JSON editor and want to
 annotate data-properties; and then show/indicate which properties have annotations
 in your editor.
 Another example would be, if you want to define a data format that puts
 additional constraints on the JSON data.
-Then you could write a verifier which uses the _location information_ in case
+Then you could write a verifier which uses the _position information_ in case
 one of these additional restrictions was not satisfied in order to show,
 where exactly in the data the "misbehavior" occurred.
 
@@ -141,7 +220,7 @@ the result for example above would be:
 }
 ```
 
-##### The `pos` Object
+#### The `pos` Object
 
 Each position/location information object consists of the following properties:
 ```javascript
@@ -153,7 +232,7 @@ Each position/location information object consists of the following properties:
 }
 ```
 
-##### `pos` for Properties
+#### `pos` for Properties
 
 Generally, the position information is stored in property `"_pos"`.
 
@@ -183,7 +262,7 @@ For example, the result for `{"someProperty":...}` would look something like:
     ...
 ```
 
-##### pos for Arrays and Objects
+#### pos for Arrays and Objects
 
 The object's / array's own position is noted in `"_pos"` in sub-property `"_this"`
 e.g.:
@@ -193,7 +272,7 @@ e.g.:
     "_this": { "first_line": ...
 ````
 
-##### `pos` for `Array` Entries
+#### `pos` for `Array` Entries
 
 Positions for array entries are noted in the array's `"_pos"` in sub-property: `"_" + <entry-index>`
 e.g.:
@@ -205,7 +284,7 @@ e.g.:
             ...
 ```
 
-##### Set custom field name for the `pos` Object
+#### Set custom field name for the `pos` Object
 
 The field name for the `pos` object can be set to something different than
 `_pos`, e.g. `__mycustom_name`:
@@ -215,7 +294,7 @@ jsonlint.parser.setPosEnabled('__mycustom_name');
 
 The currently set field name for `pos` can be retrieved using:
 ```javascript
-var locFieldName = jsonlint.parser.getPos();
+var posFieldName = jsonlint.parser.getPos();
 ```
 
 NOTE for `FALSY` values, the position information will be disabled in parsing results
@@ -223,7 +302,7 @@ NOTE for `FALSY` values, the position information will be disabled in parsing re
 
 --------------
 
-### EXT: Strict parsing mode
+### FEATURE: Strict parsing mode
 
 Enable `strict` parsing mode:
 ```javascript
