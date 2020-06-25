@@ -104,7 +104,7 @@ define(['appUtil', 'jsonlint', 'esprima', 'grammarValidator', 'parseOptions'],
 
         if ($.isArray(prev)) {
             // array-entry, i.e.: [..., VALUE_i, ...]
-            pos = prev[locField]['_i' + path[(i - 1)]];
+            pos = prev[locField]['_' + path[(i - 1)]];
         } else if (typeof prev === 'object') {
             //property, i.e.: "name": VALUE
             pos = prev[locField]['_' + path[(i - 1)]];

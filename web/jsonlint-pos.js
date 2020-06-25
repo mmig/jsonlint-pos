@@ -236,12 +236,12 @@ this.$ = $$[$0-1];
 break;
 case 20:
 this.$ = [$$[$0]];
-            _p._loc(this.$, {'_i0': _$[$0]});//MOD:locInfo array-entry
+            _p._loc(this.$, {'_0': _$[$0]});//MOD:locInfo array-entry
         
 break;
 case 21:
 this.$ = $$[$0-2]; $$[$0-2].push($$[$0]);
-            _p._loc(this.$, _$[$0], '_i' +  (this.$.length - 1));//MOD:locInfo array-list-entry
+            _p._loc(this.$, _$[$0], '_' +  (this.$.length - 1));//MOD:locInfo array-list-entry
         
 break;
 }

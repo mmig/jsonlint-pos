@@ -206,10 +206,10 @@ JSONArray
 JSONElementList
     : JSONValue
         {$$ = [$1];
-            _p._loc($$, {'_i0': @1});//MOD:locInfo array-entry
+            _p._loc($$, {'_0': @1});//MOD:locInfo array-entry
         }
     | JSONElementList ',' JSONValue
         {$$ = $1; $1.push($3);
-            _p._loc($$, @3, '_i' +  ($$.length - 1));//MOD:locInfo array-list-entry
+            _p._loc($$, @3, '_' +  ($$.length - 1));//MOD:locInfo array-list-entry
         }
     ;

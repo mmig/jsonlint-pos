@@ -37,7 +37,7 @@ function comparePositions(pos, pos2){
         var isSame = true;
         if(!compare(p, p2, field, 'silent') && parent && parent._pos_items){
             var isArray = parent._type === 'Array';
-            var itemFieldName = '_' + (isArray? 'i' : '') + seg[size-1];
+            var itemFieldName = '_' + seg[size-1];
             p = convertReduce(parent._pos_items[itemFieldName], Array.isArray(p2));
             isSame = compare(p, p2, field + '  (from parent)', 'silent');
         }
@@ -75,7 +75,7 @@ function comparePositions(pos, pos2){
  * the inner position differes from the out position information:
  * <pre>
  *  _pos_items: {
- *    _i3: { first_line: ...
+ *    _3: { first_line: ...
  *    ...
  *  }
  * </pre>
@@ -105,8 +105,8 @@ function extractPositions(obj, locName){
         for(var i=0; i < size; ++i){
             tmp = extractPositions(obj[i], locName);
             if(!tmp){
-                tmp = p['_i'+i];
-                delete p['_i'+i];
+                tmp = p['_'+i];
+                delete p['_'+i];
             }
             pos[i] = tmp;
         }
