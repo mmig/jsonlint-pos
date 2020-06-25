@@ -1,7 +1,7 @@
 {
   "author": "russa",
   "name": "jsonlint-pos",
-  "description": "Validate JSON",
+  "description": "Parse JSON strings with position information",
   "keywords": [
     "json",
     "validation",
@@ -13,7 +13,6 @@
     "strict"
   ],
   "version": "2.0.0",
-  "preferGlobal": true,
   "repository": {
     "type": "git",
     "url": "git://github.com/mmig/jsonlint-pos.git"
@@ -26,6 +25,7 @@
     "jsonlint": "lib/cli.js"
   },
   "browser": "web/jsonlint-pos.js",
+  "types": "index.d.ts",
   "engines": {
     "node": ">= 0.6"
   },
