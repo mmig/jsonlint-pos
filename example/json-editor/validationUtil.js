@@ -1,7 +1,7 @@
 
-define(['appUtil', 'jsonlint', 'jsonValidator', 'parseOptions'],
+define(['appUtil', 'jsonlint', 'parseOptions'],
     function(
-        util, jsonparser, GrammarValidator, options
+        util, jsonparser, options
 ){
     jsonparser = jsonparser.parser;
     /**
@@ -147,10 +147,10 @@ define(['appUtil', 'jsonlint', 'jsonValidator', 'parseOptions'],
     function _createFoldingProcessor(editor, foldingMarkerId, strucutreMarkerId){
         var FOLDING_MARKER   = foldingMarkerId;
         var STRUCTURE_MARKER = strucutreMarkerId;
-        var addFoldingFor = function(editor, json, grammarPath){
-            var path = grammarPath;
-            if(typeof grammarPath === 'string'){
-                grammarPath = grammarPath.split('.');
+        var addFoldingFor = function(editor, json, jsonPath){
+            var path = jsonPath;
+            if(typeof jsonPath === 'string'){
+                jsonPath = jsonPath.split('.');
             }
             var pos = getPosInJson(json, path);
             pos = getOffsetFor(editor, pos);
@@ -159,24 +159,24 @@ define(['appUtil', 'jsonlint', 'jsonValidator', 'parseOptions'],
                  editor.getTextView().getModel()
             );
         };
-        //grammar path should be array with ['<main structure element>', '.']
+        //json path should be array with ['<main structure element>', '.']
         var addStructureMarkerFor = function(editor, json, path, locField){
             if(!path || ! path.length === 2 || !path[1] === '.'){
-                console.warn('invalid path for grammar structure element: '+JSON.stringify(path));
+                console.warn('invalid path for json structure element: '+JSON.stringify(path));
                 return;//////////////////// EARLY EXIT ////////////////////////////
             }
             var pos = getPosInJson(json, [path[0]], locField);//get position for property-label only
             pos = getOffsetFor(editor, pos);
             editor.addMarker(STRUCTURE_MARKER, pos.start, pos.end, '"' + path[0] + '" definition');
         };
-        return function applyFoldingImpl(grammarPathsList, locField){
+        return function applyFoldingImpl(jsonPathsList, locField){
             try{
                 jsonparser.setPosEnabled(locField);
                 var json = jsonparser.parse(editor.val());
                 jsonparser.setPosEnabled(false);
-                for(var i=0, size=grammarPathsList.length; i < size; ++i){
-                    addFoldingFor(editor, json, grammarPathsList[i], locField);
-                    addStructureMarkerFor(editor, json, grammarPathsList[i], locField);
+                for(var i=0, size=jsonPathsList.length; i < size; ++i){
+                    addFoldingFor(editor, json, jsonPathsList[i], locField);
+                    addStructureMarkerFor(editor, json, jsonPathsList[i], locField);
                 }
             } catch(jsonerror){
                 console.warn('Cannot create folding for errornous JSON: '+jsonerror);
@@ -186,13 +186,13 @@ define(['appUtil', 'jsonlint', 'jsonValidator', 'parseOptions'],
     };
 
     /**
-     * field for storing the last validated JSON grammar (-> check against this to determine, if re-validation is necessary)
+     * field for storing the last validated JSON (-> check against this to determine, if re-validation is necessary)
      *
      * @private
      * @type JSONObject
      * @memberOf ValidationUtil.private
      */
-    var _thePrevValidatedJSONgrammar;
+    var _thePrevValidatedJSON;
     /**
      * @private
      * @function
@@ -211,25 +211,24 @@ define(['appUtil', 'jsonlint', 'jsonValidator', 'parseOptions'],
          * 			the JSON representation of the current text-input
          * 			has changed
          */
-        return function validateJsonGrammarImpl(locField, isForceValidation) {
+        return function validateJsonImpl(locField, isForceValidation) {
             if (!editor.val()) {
-                _thePrevValidatedJSONgrammar = null;
+                _thePrevValidatedJSON = null;
                 return;////////////////////////// EARLY EXIT //////////////////////////
             }
                     //convert content of editor-view to JSON object
             // (do not continue, if it is not a JSON ...)
-            var grammarText = editor.val();
-            var jsonGrammar;
-            _thePrevValidatedJSONgrammar = null;
+            var jsonText = editor.val();
+            _thePrevValidatedJSON = null;
             editor.removeAllErrorMarkers();
 
             //create marker for errornous JSON:
             //get details for the error using the json-lint parser:
             try {
                 jsonparser.setStrict(options.isStrict());//true);
-                jsonparser.setPosEnabled(locField? locField+'$' : true);//<- always compile with loc-info (for marking / folding)
+                jsonparser.setPosEnabled(locField && locField !== true? locField+'$' : true);//<- always compile with loc-info (for marking / folding)
 
-                jsonparser.parse(grammarText);
+                jsonparser.parse(jsonText);
 
                 jsonparser.setStrict(false);
                 jsonparser.setPosEnabled(false);
@@ -334,24 +333,21 @@ define(['appUtil', 'jsonlint', 'jsonValidator', 'parseOptions'],
          * @param {OrionEditor} jsonEditor
          * 			see jsonEditorModule.js
          */
-        initGrammarValidator: function(view, jsonEditor, errorMarkerTypeId, warningMarkerTypeId, infoMarkerTypeId){
+        initJsonValidator: function(view, jsonEditor, errorMarkerTypeId, warningMarkerTypeId, infoMarkerTypeId){
             this._jsonValidator = _createValidator(view, jsonEditor, errorMarkerTypeId, warningMarkerTypeId, infoMarkerTypeId);
             return this._jsonValidator;
         },
-        validateGrammar: function(locField){
-            this._jsonValidator(locField);
-        },
-        resetGrammarValidation: function(){
-            _thePrevValidatedJSONgrammar = null;
+        resetJsonValidation: function(){
+            _thePrevValidatedJSON = null;
         },
         validateJson: _validateJson,
         //TODO move this to ... util? (would also need some of the private HELPER functions to util then...)
-        initGrammarFolding: function(jsonEditor, foldingMarkerTypeId, strucutreMarkerTypeId){
+        initJsonFolding: function(jsonEditor, foldingMarkerTypeId, strucutreMarkerTypeId){
             this._foldingProcessor = _createFoldingProcessor(jsonEditor, foldingMarkerTypeId, strucutreMarkerTypeId);
             return this._foldingProcessor;
         },
-        createGrammarFolding: function(grammarElementsList, locField){
-            this._foldingProcessor(grammarElementsList, locField);
+        createJsonFolding: function(jsonElementsList, locField){
+            this._foldingProcessor(jsonElementsList, locField);
         }
     };
 });

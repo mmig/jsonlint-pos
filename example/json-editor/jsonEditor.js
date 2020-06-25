@@ -39,8 +39,8 @@ define(['require', 'orioneditor', 'validationUtil'],function(require, _editor, v
         var WARNING_MARKER  = _annotations.AnnotationType.ANNOTATION_WARNING;
         var BOOKMARK_MARKER = _annotations.AnnotationType.ANNOTATION_BOOKMARK;
         var FOLDING_MARKER  = _annotations.AnnotationType.ANNOTATION_FOLDING;
-        //create (and set) grammar-validation function
-        editor.validate = validationUtil.initGrammarValidator(
+        //create (and set) json-validation function
+        editor.validate = validationUtil.initJsonValidator(
                 view, editor, ERROR_MARKER, WARNING_MARKER, BOOKMARK_MARKER
         );
         //allow switching "auto-validation" on and off:
@@ -83,18 +83,21 @@ define(['require', 'orioneditor', 'validationUtil'],function(require, _editor, v
             }
                             return newType;
         }
-        //marker in overview rule for "bookmarking" grammar-structure (i.e. start of utterances-element):
-        var STRUCTURE_MARKER = createCustomMarker('mmir.grammar.structure', 'Grammar Structure', false, true);
+        //marker in overview rule for "bookmarking" json-structure:
+        var STRUCTURE_MARKER = createCustomMarker('jsonlint.json.structure', 'JSON Structure', false, true);
         //init create-folding-factory:
-        editor.doCreateFolding = validationUtil.initGrammarFolding(editor, FOLDING_MARKER, STRUCTURE_MARKER);
+        editor.doCreateFolding = validationUtil.initJsonFolding(editor, FOLDING_MARKER, STRUCTURE_MARKER);
         editor.doClearFolding = function(){
             this.getAnnotationModel().removeAnnotations(FOLDING_MARKER);
             this.getAnnotationModel().removeAnnotations(STRUCTURE_MARKER);
         };
-        var foldableGrammarElements = [ ['stop_word', '.'], ['tokens', '.'], ['utterances', '.']];
+        editor.doGetFoldableElements = function(){
+            //FIXME do parse contents for this(?)
+            return [ ['stop_word', '.'], ['tokens', '.'], ['utterances', '.']];
+        };
         editor.createFolding = function(){
             this.doClearFolding();
-            this.doCreateFolding(foldableGrammarElements);
+            this.doCreateFolding(this.doGetFoldableElements());
         };
 
         //taken from esprima/customeditor.js:

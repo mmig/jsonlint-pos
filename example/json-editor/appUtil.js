@@ -207,8 +207,8 @@ define(['lodash', 'jquery'], function(lodash, $){
             setSelection(ta, pos.start, pos.end, true);
         };
     })();
-                    return {
-                    /**
+    return {
+        /**
          * (Re-) format a JSON object
          * (for display in editor).
          *
@@ -230,7 +230,7 @@ define(['lodash', 'jquery'], function(lodash, $){
         isEqual: function(a,b){
             return lodash.isEqual(a,b);
         },
-                    /**
+        /**
          * Select a line in a textarea.
          *
          * WARNING: there a 2 ways to call this function
@@ -242,7 +242,7 @@ define(['lodash', 'jquery'], function(lodash, $){
          *
          * OR
          * @param {Number} lineNumber
-         * @param {GrammarEditor} editor (see grammarEditor.js)
+         * @param {JsonEditor} editor (see jsonEditor.js)
          *
          * @function
          * @public
@@ -251,4 +251,4 @@ define(['lodash', 'jquery'], function(lodash, $){
          */
         selectLine: _selectLine
     };
-        });
+});

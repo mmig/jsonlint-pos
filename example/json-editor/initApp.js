@@ -9,7 +9,7 @@ define(
             console.info(msg);//TODO add real impl.!
         }
     }
-    //initialize the orion-editor for the grammar
+    //initialize the orion-editor for the json
     var _editorClassName = module.config().jsonEditorClass;//'editor';
     var editor = editorModule.init(view, _editorClassName);
     define('jsonEditor', function(){

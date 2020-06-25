@@ -11,7 +11,7 @@ function(require, $, validationUtil, jsonlint, waitDialog
      *
      * @private
      * @type Function
-     * @memberOf TestGrammarApp
+     * @memberOf JsonEditorApp
      */
     var _initAppOnDocReady = function() {
 
@@ -106,7 +106,7 @@ function(require, $, validationUtil, jsonlint, waitDialog
      *
      * @private
      * @type Function
-     * @memberOf TestGrammarApp
+     * @memberOf JsonEditorApp
      */
     function convertArrayValues(n,v){
         if(Array.isArray(v)){
@@ -126,7 +126,7 @@ function(require, $, validationUtil, jsonlint, waitDialog
      *
      * @private
      * @type Function
-     * @memberOf TestGrammarApp
+     * @memberOf JsonEditorApp
      */
     function _showLoader(text, delay, func, argsArray) {
 
@@ -159,7 +159,7 @@ function(require, $, validationUtil, jsonlint, waitDialog
      *
      * @private
      * @type Function
-     * @memberOf TestGrammarApp
+     * @memberOf JsonEditorApp
      */
     function _hideLoader() {
 

@@ -22,7 +22,6 @@
             , 'parseOptions': 'json-editor/parseOptions'
             , 'appUtil': 'json-editor/appUtil'
             , 'validationUtil': 'json-editor/validationUtil'
-            , 'jsonValidator' : 'json-editor/jsonValidator'
             , 'jsonEditorModule': 'json-editor/jsonEditor'
         }
     });
