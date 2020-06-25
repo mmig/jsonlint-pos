@@ -6,9 +6,13 @@
     "json",
     "validation",
     "lint",
-    "jsonlint"
+    "jsonlint",
+    "position",
+    "offset",
+    "location",
+    "strict"
   ],
-  "version": "1.7.1",
+  "version": "2.0.0",
   "preferGlobal": true,
   "repository": {
     "type": "git",
