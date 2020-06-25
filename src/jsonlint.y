@@ -39,11 +39,16 @@ parser._checkLoc = function(t, l, sub, locVal){
             var errStr = 'Parse error in "strict" mode on line '+pos.first_line+
                             ': Cannot add location information to "'+l+'", because' +
                             ' the property already exists.';
-            var err = new Error(errStr);
-            err._pos = pos;
-            err._posTo = {};
-            throw err;
+            this._emitPosError(errStr, pos, {});
         }
+    }
+}
+parser._emitPosError = function(msg, pos, posTo){
+    var hash = {pos: pos, posOther: posTo};
+    if(typeof this.yy.parseError === 'function'){
+        this.yy.parseError(msg, hash);
+    } else {
+        this.parseError(msg, hash);
     }
 }
 /**
@@ -168,7 +173,7 @@ JSONMemberList
             if(yy.parser.isStrict()){//MOD: "strict" mode: reject duplicate key entries
                 if(typeof $1[$3[0]] !== 'undefined'){
                     var loc = yy.parser.getPos();
-                    var pos = $3[loc]? $3[loc][0] : @3;
+                    var pos = $3[loc]? $3[loc][0] : @3, posTo;
 
                     var locDupl = $3[0] === loc;
                     var errStr = 'Parse error in "strict" mode on line '+pos.first_line+': Duplicate property "'+$3[0]+'"' +
@@ -176,13 +181,11 @@ JSONMemberList
 
 
                     var err = new Error(errStr);
-                    if($3[loc]){
-                        err._pos = pos;
+                    if(!$3[loc]){
+                        pos = {};
                     }
-                    if($1[loc]){
-                        err._posTo = !locDupl? $1[loc]['_'+$3[0]][0] : $1[loc];
-                    }
-                    throw err;
+                    posTo = $1[loc]? !locDupl? $1[loc]['_'+$3[0]][0] : $1[loc] : {};
+                    yy.parser._emitPosError(errStr, pos, posTo);
                 }
             }//END MOD: "strict" mode
 
