@@ -10,10 +10,9 @@
             }
         },
         paths : {
-            'jsonlint': '../web/jsonlint-pos'
+            'jsonlint': '../web/jsonlint-pos.min'
             // libraries:
-            , 'jquery': 'json-editor/libs/jquery-3.5.1.min'
-            , 'esprima' : 'json-editor/libs/esprima'
+            , 'jquery': 'json-editor/libs/jquery.min'
             , 'orioneditor': 'json-editor/libs/built-editor-amd'
             , 'lodash': 'json-editor/libs/lodash.min'
             , 'waitDialog': 'json-editor/libs/stdlne-wait-dlg'

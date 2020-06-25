@@ -29,6 +29,9 @@ module.exports = {
 }
 
 if (require.main === module) {
+
+    require('./bundle').exitOnError();
+
     var rawFile = path.resolve(__dirname, '..', process.argv[2]);
     var lexFile = path.resolve(__dirname, '..', process.argv[3]);
 

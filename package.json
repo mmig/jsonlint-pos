@@ -33,14 +33,18 @@
   "devDependencies": {
     "fs-extra": "^9.0.1",
     "jison": "^0.4.18",
+    "jquery": "^3.5.1",
+    "requirejs": "^2.3.6",
     "test": "*",
     "uglify-js": "^3.10.0"
   },
   "scripts": {
-    "build": "node scripts/build.js",
-    "build:jison": "node scripts/build-jison.js src/jsonlint.y src/jsonlint.l",
-    "build:lib": "node scripts/bundle.js jsonlint.js lib/jsonlint-pos.js web/jsonlint-pos.js",
-    "build:rm": "node -e require('fs').unlinkSync('jsonlint.js')",
+    "build": "node scripts/build.js && npm test",
+    "build:lib": "node scripts/build.js",
+    "build:example": "node scripts/build-example.js",
+    "build:st:jison": "node scripts/build-jison.js src/jsonlint.y src/jsonlint.l",
+    "build:st:lib": "node scripts/bundle.js jsonlint.js lib/jsonlint-pos.js web/jsonlint-pos.js",
+    "build:st:rm": "node -e require('fs').unlinkSync('jsonlint.js')",
     "test": "node test/all-tests.js"
   },
   "optionalDependencies": {}

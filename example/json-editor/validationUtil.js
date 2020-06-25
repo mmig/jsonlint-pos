@@ -1,7 +1,7 @@
 
-define(['appUtil', 'jsonlint', 'esprima', 'grammarValidator', 'parseOptions'],
+define(['appUtil', 'jsonlint', 'grammarValidator', 'parseOptions'],
     function(
-        util, jsonparser, jsparser, GrammarValidator, options
+        util, jsonparser, GrammarValidator, options
 ){
     jsonparser = jsonparser.parser;
     /**
@@ -324,55 +324,6 @@ define(['appUtil', 'jsonlint', 'esprima', 'grammarValidator', 'parseOptions'],
         }
         return jsonObj;
     }
-    /**
-     *
-     * Verifies the viewModel's compiled JavaScript Grammar:
-     * if invalid JavaScript was generated, errors are printed via
-     * <code>util._error()</code>
-     *
-     * @private
-     * @function
-     * @memberOf ValidationUtil.private
-     */
-    function _validateJsEvalErrors(viewModel) {
-
-        var currentGrammar = viewModel.getGrammarConverter();
-        var grammarId = viewModel.id;
-        if (currentGrammar.executeGrammar.hasErrors) {
-//			var jsparser = require('esprima');
-            var text = currentGrammar.getJSGrammar();
-
-            try {
-                var syntax = jsparser.parse(text, {
-                    tolerant : true,
-                    loc : true
-                });
-                var errors = syntax.errors;
-
-                if (errors.length > 0) {
-                    util._error('Invalid JavaScript code for grammar "' + grammarId
-                            + '". Total issues: ' + errors.length);
-                    for (var i = 0; i < errors.length; i += 1) {
-                        util._error('    At ' + _getLocationAsString(errors[i])
-                                + ': ' + errors[i].description);
-                    }
-                }
-            } catch (err) {
-                util._error(err.description + ' in JavaScript code for grammar "'
-                        + grammarId + '" at ' + _getLocationAsString(err));
-                console.error(err);//FIXME debug
-            }
-        }
-    }
-    /** HELPER for _validateJsEvalErrors
-     *
-     * @private
-     * @function
-     * @memberOf ValidationUtil.private
-     */
-    function _getLocationAsString(e) {
-        return 'line ' + e.lineNumber + ':' + e.column + '(offset '+ e.index + ')';
-    };
 
     return {
         /** @lends ValidationUtil.prototype */
@@ -394,7 +345,6 @@ define(['appUtil', 'jsonlint', 'esprima', 'grammarValidator', 'parseOptions'],
             _thePrevValidatedJSONgrammar = null;
         },
         validateJson: _validateJson,
-        validateCompiledGrammar: _validateJsEvalErrors,
         //TODO move this to ... util? (would also need some of the private HELPER functions to util then...)
         initGrammarFolding: function(grammarEditor, foldingMarkerTypeId, strucutreMarkerTypeId){
             this._foldingProcessor = _createFoldingProcessor(grammarEditor, foldingMarkerTypeId, strucutreMarkerTypeId);

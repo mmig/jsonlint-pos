@@ -1,10 +1,7 @@
 
 define(
-    ['appUtil', 'grammarEditor', 'module', 'waitDialog'
-//	 , 'esprima'
-    ]
+    ['appUtil', 'grammarEditor', 'module', 'waitDialog']
     , function(util,  editorModule, module, waitDialog
-//	         , jsParser
 ){
 
     var view = {
