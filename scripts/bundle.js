@@ -34,11 +34,14 @@ function bundleTo(srcPath, targets){
     });
 }
 
-function minifySync(code, targetFileName){
-    return uglify.minify(code, {
+function minifySync(code, unMinifiedFileName){
+    var minFileName = unMinifiedFileName.replace(/\.js$/, '.min.js');
+    var contents = {};
+    contents[unMinifiedFileName] = code;
+    return uglify.minify(contents, {
         sourceMap: {
-            filename: targetFileName,
-            url: targetFileName + '.map'
+            filename: minFileName,
+            url: minFileName + '.map'
         }
     });
 }

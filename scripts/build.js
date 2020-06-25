@@ -14,13 +14,19 @@ buildJison.build(rawFile, lexFile).then(function(parser){
 
     bundle.bundleTo(parser, [libFile, webFile]).then(function(bundledCode){
 
-        var minFileName = 'jsonlint-pos.min.js'
-        var minFile = path.resolve(__dirname, '..', 'web', minFileName);
-        var minified = bundle.minifySync(bundledCode, minFileName);
-
+        var minified = bundle.minifySync(bundledCode, 'jsonlint-pos.js');
+        var minFile = path.resolve(__dirname, '..', 'web', 'jsonlint-pos.min.js');
         return Promise.all([
             fs.writeFile(minFile, minified.code, 'utf-8'),
             fs.writeFile(minFile + '.map', minified.map, 'utf-8')
-        ])
+        ]);
     });
-})
+});
+
+function fail(err, origin){
+    console.error('ERROR at ', origin, ': caused ', err);
+    process.exit(1);
+}
+
+process.on('uncaughtException', fail);
+process.on('unhandledRejection', fail);
