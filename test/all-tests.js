@@ -1,6 +1,7 @@
 var fs = require("fs"),
     assert = require("assert"),
     parser = require("../lib/jsonlint-pos").parser,
+    Parser = require("../lib/jsonlint-pos").Parser,
     utils = require('./utils');
 
 exports["test object"] = function () {
@@ -311,6 +312,37 @@ exports["test position information with custom position field is correct"] = fun
     assert.doesNotThrow(function () {utils.comparePositions(pos1, pos2)}, "should pass");
 
     parser.setPosEnabled(false);
+}
+
+//NOTE must run after a test with parser.setPosEnabled(true), and then was set to false again
+exports["test disabling position information does work"] = function () {
+
+    var json = fs.readFileSync(__dirname + "/passes/2.json").toString();
+    var parsedJson = parser.parse(json);
+    assert.ifError(parsedJson._pos, "should not be present");
+}
+
+exports["test position information option is only applied to the parser instance"] = function () {
+
+    var json = fs.readFileSync(__dirname + "/passes/2.json").toString();
+
+    var p2 = new Parser();
+    p2.setPosEnabled(true);
+    var parsedJson = p2.parse(json);
+    assert.ok(parsedJson._pos, "should be present");
+
+    var parsedJson = parser.parse(json);
+    assert.ifError(parsedJson._pos, "should not be present");
+}
+
+exports["test strict mode option is only applied to the parser instance"] = function () {
+
+    var json = fs.readFileSync(__dirname + "/fails/35.json").toString();
+
+    var p2 = new Parser();
+    p2.setStrict(true);
+    assert["throws"](function () {p2.parse(json)}, "should throw error");
+    assert.doesNotThrow(function () {parser.parse(json)}, "should pass");
 }
 
 if (require.main === module)

@@ -2,10 +2,10 @@
 %{
 
 // MODIFICATION russa: added position meta-data to parsed objects
-var _p = parser;
-var _isLoc = false;
-_p.getPos = function(){
-  return _isLoc;
+
+parser._isLoc = false;
+parser.getPos = function(){
+  return this._isLoc;
 };
 /**
  * helper function: set location information for the parsed element
@@ -16,11 +16,11 @@ _p.getPos = function(){
  * @param  {boolean} [subLoc] OPTIONAL if <code>true</code> the location information
  *                            will be taken from the location sub-field of <code>loc</code>
  */
-_p._loc = function(t, loc, sub, subLoc){
-    var l = _p.getPos();
+parser._loc = function(t, loc, sub, subLoc){
+    var l = this.getPos();
     if(l) {
         var locVal = subLoc? loc[l] : loc;
-        _p._checkLoc(t, l, sub, locVal);
+        this._checkLoc(t, l, sub, locVal);
         sub? (t[l][sub] = locVal) : (t[l] = locVal);
     }
 };
@@ -31,8 +31,8 @@ _p._loc = function(t, loc, sub, subLoc){
  * @throws {Error} if strict mode is enabled and position information
  *                 would overwrite the targeted field
  */
-_p._checkLoc = function(t, l, sub, locVal){
-    if(_p.isStrict()){
+parser._checkLoc = function(t, l, sub, locVal){
+    if(this.isStrict()){
         var val = sub? t[l][sub] : t[l];
         if(typeof val !== 'undefined'){
             var pos = locVal && !locVal.first_line? locVal[0] : locVal;
@@ -55,22 +55,22 @@ _p._checkLoc = function(t, l, sub, locVal){
  *        Will be disabled for FALSY values.
  * DEFAULT: disabled
  */
-_p.setPosEnabled = function(isEnabled){
-    _isLoc = isEnabled === true? '_pos' : isEnabled;
+parser.setPosEnabled = function(isEnabled){
+    this._isLoc = isEnabled === true? '_pos' : isEnabled;
 };
 
 // MODIFICATION russa: add "strict" parsing mode (e.g. reject duplicate key entries)
-var _isStrict = false;
-_p.isStrict = function(){
-    return _isStrict;
+parser._isStrict = false;
+parser.isStrict = function(){
+    return this._isStrict;
 };
 /**
  * @param {boolean} isEnabled
  *        enable / disable "strict" mode for parsing
  * DEFAULT: disabled
  */
-_p.setStrict = function(isEnabled){
-    _isStrict = isEnabled;
+parser.setStrict = function(isEnabled){
+    this._isStrict = isEnabled;
 };
 
 %}
@@ -138,36 +138,36 @@ JSONValue
 JSONObject
     : '{' '}'
         {{$$ = {};
-            _p._loc($$, @1);//MOD:locInfo empty obj
+            yy.parser._loc($$, @1);//MOD:locInfo empty obj
         }}
     | '{' JSONMemberList '}'
         {$$ = $2;
-            _p._loc($$, @2, '_this');//MOD:locInfo obj
+            yy.parser._loc($$, @2, '_this');//MOD:locInfo obj
         }
     ;
 
 JSONMember
     : JSONString ':' JSONValue
         {$$ = [$1, $3];
-            _p._loc($$, [@1, @3]);//MOD:locInfo member&value
+            yy.parser._loc($$, [@1, @3]);//MOD:locInfo member&value
         }
     ;
 
 JSONMemberList
     : JSONMember
         {{$$ = {}; $$[$1[0]] = $1[1];
-            if(_p.getPos()){
-                _p._loc($$, @1);//MOD:locInfo member
-                _p._loc($$, $1, '_' + $1[0], true);//MOD:locInfo member
+            if(yy.parser.getPos()){
+                yy.parser._loc($$, @1);//MOD:locInfo member
+                yy.parser._loc($$, $1, '_' + $1[0], true);//MOD:locInfo member
             }
         }}
     | JSONMemberList ',' JSONMember
         {
             $$ = $1;
 
-            if(_p.isStrict()){//MOD: "strict" mode: reject duplicate key entries
+            if(yy.parser.isStrict()){//MOD: "strict" mode: reject duplicate key entries
                 if(typeof $1[$3[0]] !== 'undefined'){
-                    var loc = _p.getPos();
+                    var loc = yy.parser.getPos();
                     var pos = $3[loc]? $3[loc][0] : @3;
 
                     var locDupl = $3[0] === loc;
@@ -188,28 +188,28 @@ JSONMemberList
 
             $1[$3[0]] = $3[1];
 
-            _p._loc($$, $3, '_' + $3[0], true);//MOD:locInfo member-list
+            yy.parser._loc($$, $3, '_' + $3[0], true);//MOD:locInfo member-list
         }
     ;
 
 JSONArray
     : '[' ']'
         {$$ = [];
-            _p._loc($$, [@1, @2]);//MOD:locInfo empty array
+            yy.parser._loc($$, [@1, @2]);//MOD:locInfo empty array
         }
     | '[' JSONElementList ']'
         {$$ = $2;
-            _p._loc($$, [@1, @3], '_this');//MOD:locInfo array
+            yy.parser._loc($$, [@1, @3], '_this');//MOD:locInfo array
         }
     ;
 
 JSONElementList
     : JSONValue
         {$$ = [$1];
-            _p._loc($$, {'_0': @1});//MOD:locInfo array-entry
+            yy.parser._loc($$, {'_0': @1});//MOD:locInfo array-entry
         }
     | JSONElementList ',' JSONValue
         {$$ = $1; $1.push($3);
-            _p._loc($$, @3, '_' +  ($$.length - 1));//MOD:locInfo array-list-entry
+            yy.parser._loc($$, @3, '_' +  ($$.length - 1));//MOD:locInfo array-list-entry
         }
     ;
