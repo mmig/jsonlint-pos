@@ -1,5 +1,6 @@
 {
   "author": "russa",
+  "license": "MIT",
   "name": "jsonlint-pos",
   "description": "Parse JSON strings with position information",
   "keywords": [
