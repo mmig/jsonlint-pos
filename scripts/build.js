@@ -5,6 +5,8 @@ var path = require('path');
 var buildJison = require('./build-jison');
 var bundle = require('./bundle');
 
+bundle.exitOnError();
+
 var rawFile = path.resolve(__dirname, '..', 'src/jsonlint.y');
 var lexFile = path.resolve(__dirname, '..', 'src/jsonlint.l');
 
@@ -22,11 +24,3 @@ buildJison.build(rawFile, lexFile).then(function(parser){
         ]);
     });
 });
-
-function fail(err, origin){
-    console.error('ERROR at ', origin, ': caused ', err);
-    process.exit(1);
-}
-
-process.on('uncaughtException', fail);
-process.on('unhandledRejection', fail);

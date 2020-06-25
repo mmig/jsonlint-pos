@@ -46,10 +46,20 @@ function minifySync(code, unMinifiedFileName){
     });
 }
 
+function exitOnError(){
+    function fail(err, origin){
+        console.error('ERROR at ', origin, ': caused ', err);
+        process.exit(1);
+    }
+    process.on('uncaughtException', fail);
+    process.on('unhandledRejection', fail);
+}
+
 module.exports = {
     bundle: bundle,
     bundleTo: bundleTo,
-    minifySync: minifySync
+    minifySync: minifySync,
+    exitOnError: exitOnError
 }
 
 if (require.main === module) {
