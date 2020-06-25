@@ -1,5 +1,5 @@
 
-define(['appUtil', 'jsonlint', 'grammarValidator', 'parseOptions'],
+define(['appUtil', 'jsonlint', 'jsonValidator', 'parseOptions'],
     function(
         util, jsonparser, GrammarValidator, options
 ){
@@ -331,23 +331,23 @@ define(['appUtil', 'jsonlint', 'grammarValidator', 'parseOptions'],
                     /**
          *
          * @memberOf ValidationUtil
-         * @param {OrionEditor} grammarEditor
-         * 			see grammarEditor.js
+         * @param {OrionEditor} jsonEditor
+         * 			see jsonEditorModule.js
          */
-        initGrammarValidator: function(view, grammarEditor, errorMarkerTypeId, warningMarkerTypeId, infoMarkerTypeId){
-            this._grammarValidator = _createValidator(view, grammarEditor, errorMarkerTypeId, warningMarkerTypeId, infoMarkerTypeId);
-            return this._grammarValidator;
+        initGrammarValidator: function(view, jsonEditor, errorMarkerTypeId, warningMarkerTypeId, infoMarkerTypeId){
+            this._jsonValidator = _createValidator(view, jsonEditor, errorMarkerTypeId, warningMarkerTypeId, infoMarkerTypeId);
+            return this._jsonValidator;
         },
         validateGrammar: function(locField){
-            this._grammarValidator(locField);
+            this._jsonValidator(locField);
         },
         resetGrammarValidation: function(){
             _thePrevValidatedJSONgrammar = null;
         },
         validateJson: _validateJson,
         //TODO move this to ... util? (would also need some of the private HELPER functions to util then...)
-        initGrammarFolding: function(grammarEditor, foldingMarkerTypeId, strucutreMarkerTypeId){
-            this._foldingProcessor = _createFoldingProcessor(grammarEditor, foldingMarkerTypeId, strucutreMarkerTypeId);
+        initGrammarFolding: function(jsonEditor, foldingMarkerTypeId, strucutreMarkerTypeId){
+            this._foldingProcessor = _createFoldingProcessor(jsonEditor, foldingMarkerTypeId, strucutreMarkerTypeId);
             return this._foldingProcessor;
         },
         createGrammarFolding: function(grammarElementsList, locField){

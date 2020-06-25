@@ -1,6 +1,6 @@
 
 define(
-    ['appUtil', 'grammarEditor', 'module', 'waitDialog']
+    ['appUtil', 'jsonEditorModule', 'module', 'waitDialog']
     , function(util,  editorModule, module, waitDialog
 ){
 
@@ -10,7 +10,7 @@ define(
         }
     }
     //initialize the orion-editor for the grammar
-    var _editorClassName = module.config().grammarEditorClass;//'editor';
+    var _editorClassName = module.config().jsonEditorClass;//'editor';
     var editor = editorModule.init(view, _editorClassName);
     define('jsonEditor', function(){
         return editor;

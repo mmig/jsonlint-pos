@@ -15,8 +15,6 @@ function(require, $, validationUtil, jsonlint, waitDialog
      */
     var _initAppOnDocReady = function() {
 
-//		console.log('dom ready');
-
         require(['jsonEditor', 'parseOptions'], function(edt, opt){
 
             edt.setAutoValidationEnabled(true);
@@ -145,17 +143,15 @@ function(require, $, validationUtil, jsonlint, waitDialog
         } else {
             _showLoaderTimer = setTimeout(function() {
 
-                    waitDialog.show(text, 'app');
+                waitDialog.show(text, 'app');
 
-                    if(func){
-                        setTimeout(function() {
-                            func.apply(null, argsArray);
-                        }, delay);
-                    }
-//				}
+                if(func){
+                    setTimeout(function() {
+                        func.apply(null, argsArray);
+                    }, delay);
+                }
             }, 50);
         }
-
     }
 
     /**
@@ -172,53 +168,8 @@ function(require, $, validationUtil, jsonlint, waitDialog
         _hideLoaderTimer = setTimeout(function(){
             waitDialog.hide('app');
         }, 50);
-
     }
 
-    /**
-     * HELPER for converting the current editor input (or the text argument)
-     * 		  into a JSON object.
-     *
-     * If the text is an invalid JSON definition, an error dialog will be shown
-     * to the user.
-     *
-     *  NOTE this helper should only be used in reaction to an explicit user action.
-     *
-     * @private
-     * @type Function
-     * @memberOf TestGrammarApp
-     */
-    function _inputTextToJSON(view, text) {
-
-        if(typeof text === 'undefined'){
-            text = view.getJsonGrammarText();
-        }
-
-        var jsonObj = validationUtil.validateJson(text, function(err){
-
-//			var doSelectLine = function(){
-//				util.selectLine(lineNo, view.getEditor());
-//				setTimeout(function() {
-//					util.selectLine(lineNo, view.getEditor());
-//				}, 500);
-//			};
-
-            var msg = err.message;
-
-
-//			_showErrorDialog('Error: Invalid JSON Fromat',
-//					'Error on parsing grammar text into a JSON object.',
-//					'<pre>' + msg + '</pre>'
-////					, doSelectLine, doSelectLine
-//			);
-
-        });
-
-        if(jsonObj){
-            return jsonObj;
-        }
-        return false;
-    }
 
     return {};
 });

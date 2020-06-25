@@ -6,7 +6,7 @@ define(['require', 'orioneditor', 'validationUtil'],function(require, _editor, v
     };
 
     function init(view, _editorClassName){
-                    var editor = _editor({className: _editorClassName, lang: "js"})[0];
+        var editor = _editor({className: _editorClassName, lang: "js"})[0];
         editor.val = function(str){
 
             if(typeof str !== 'undefined'){

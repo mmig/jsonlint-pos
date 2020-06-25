@@ -5,7 +5,7 @@
         // debugMode: true,
         config: {
             'initApp': {
-                grammarEditorClass: 'editor',
+                jsonEditorClass: 'editor',
                 waitDialogCssPath: 'json-editor/css/'
             }
         },
@@ -22,8 +22,8 @@
             , 'parseOptions': 'json-editor/parseOptions'
             , 'appUtil': 'json-editor/appUtil'
             , 'validationUtil': 'json-editor/validationUtil'
-            , 'grammarValidator' : 'json-editor/jsonGrammarValidator'
-            , 'grammarEditor': 'json-editor/grammarEditor'
+            , 'jsonValidator' : 'json-editor/jsonValidator'
+            , 'jsonEditorModule': 'json-editor/jsonEditor'
         }
     });
 
